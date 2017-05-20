@@ -1,0 +1,66 @@
+{
+  "name": "vue-workshop",
+  "version": "0.1.0",
+  "description": "A Vue.js project",
+  "author": "Wojciech Urbanski <wojtiku@gmail.com>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "test": "vue-cli-service test"
+  },
+  "dependencies": {
+    "vue": "2.5.13",
+    "vue-router": "3.0.1",
+    "vuelidate": "0.6.1",
+    "vuex": "3.0.1",
+    "vuex-router-sync": "5.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "3.0.0-beta.1",
+    "@vue/cli-plugin-unit-jest": "3.0.0-beta.1",
+    "@vue/cli-service": "3.0.0-beta.1",
+    "@vue/test-utils": "1.0.0-beta.12",
+    "fetch-ponyfill": "^5.0.1",
+    "node-sass": "4.7.2",
+    "sass-loader": "6.0.6",
+    "vue-template-compiler": "2.5.13",
+    "babel-core": "7.0.0-beta.3",
+    "babel-jest": "22.4.1",
+    "ajv": "6.1.1"
+  },
+  "babel": {
+    "presets": [
+      "@vue/app"
+    ]
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.vue$": "vue-jest",
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^/src/(.*)$": "<rootDir>/src/$1"
+    },
+    "snapshotSerializers": [
+      "jest-serializer-vue"
+    ]
+  }
+}
