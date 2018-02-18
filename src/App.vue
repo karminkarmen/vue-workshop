@@ -1,14 +1,7 @@
 <template>
   <div id="app">
 
-    <nav class="navbar container">
-      <a class="navbar--brand" :title="name + '2'" href="#">{{ name }} (work)shop</a>
-      <ul class="navbar--menu">
-        <li class="active"><a href="#">Somewhere</a></li>
-        <li class="active"><a href="#">Over</a></li>
-        <li class="active"><a href="#">The rainbow</a></li>
-      </ul>
-    </nav>
+    <navbar class="container" />
 
     <section class="container">
       <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
@@ -189,6 +182,7 @@
 
 <script>
   import { getAllProducts } from '/src/productService';
+  import Navbar from '/src/components/Navbar.vue';
 
 	export default {
 		data: () => {
@@ -237,6 +231,9 @@
 		  page() {
 		    this.reloadProducts();
       }
+    },
+    components: {
+      Navbar
     }
 	}
 </script>
