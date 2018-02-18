@@ -1,12 +1,12 @@
 <template>
-  <form action="#" class="box product-edit">
+  <form action="#" @submit.prevent="saveProduct" class="box product-edit">
     <div class="spinner" v-if="isLoading" />
     <template v-else-if="isError">
       <span class="lozenge">Error</span>
       There was an error when fetching the product.
     </template>
     <template v-else>
-      <h2>Edit product X</h2>
+      <h2>Edit product</h2>
 
       <div class="form-row">
         <label for="edit-name">Name</label>
@@ -84,15 +84,16 @@
         <input type="number" v-model.number="price" @input="$v.price.$touch()" id="edit-price" />
       </div>
 
-      <button :disabled="$v.$invalid" class="btn">Save product</button>
+      <button :disabled="$v.$invalid" type="submit" class="btn">Save product</button>
       <span class="lozenge" v-if="$v.$invalid">ERRORS</span>
+      <span class="lozenge" v-if="saveError">Error saving form, check all fields or try again</span>
     </template>
   </form>
 </template>
 
 <script>
   import {required, numeric} from 'vuelidate/lib/validators';
-  import { getProductById } from '/src/productService';
+  import { getProductById, updateProduct } from '/src/productService';
 
   export default {
     props: {
@@ -105,6 +106,7 @@
       return {
         isLoading: true,
         isError: false,
+        saveError: false,
 
         name: "",
         description: "",
@@ -141,6 +143,26 @@
           })
           .catch(() => this.isError = true)
           .then(() => this.isLoading = false);
+      },
+      saveProduct() {
+        if (!this.$v.$invalid && !this.isLoading) {
+          this.isLoading = true;
+          this.saveError = false;
+          updateProduct({
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            photo: this.photo,
+            color: this.color,
+            materials: this.materials,
+            department: this.department,
+            inStock: this.inStock,
+            price: this.price
+          })
+            .then(() => this.$router.push('/product/' + this.id))
+            .catch(() => this.saveError = true)
+            .then(this.isLoading = false)
+        }
       }
     },
     validations: {
