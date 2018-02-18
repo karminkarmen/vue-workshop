@@ -2,7 +2,7 @@
   <div id="app">
 
     <nav class="navbar container">
-      <a class="navbar--brand" href="#">Vue.js (work)shop</a>
+      <a class="navbar--brand" :title="name + '2'" href="#">{{ name }} (work)shop</a>
       <ul class="navbar--menu">
         <li class="active"><a href="#">Somewhere</a></li>
         <li class="active"><a href="#">Over</a></li>
@@ -11,9 +11,9 @@
     </nav>
 
     <section class="container">
-      <a class="btn" href="#less">Previous page</a>
-      1
-      <a class="btn" href="#more">Next page</a>
+      <a class="btn" href="#less" @click.prevent="page = page - 1">Previous page</a>
+      {{ page }}
+      <a class="btn" href="#more" @click.prevent="incrementPage">Next page</a>
     </section>
 
     <section class="container">
@@ -183,8 +183,16 @@
 <script>
 
 	export default {
-		name: 'app',
-		components: {
+		data: () => {
+		  return {
+		    name: "Vue.js",
+        page: 1
+      }
+    },
+		methods: {
+		  incrementPage() {
+		    this.page += 1;
+      }
 		}
 	}
 </script>
