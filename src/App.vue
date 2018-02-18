@@ -77,9 +77,7 @@
             </dd>
 
             <dt>Availability:</dt>
-            <dd v-if="product.inStock <= 0">out of stock</dd>
-            <dd v-else-if="product.inStock < 5">a few</dd>
-            <dd v-else>plenty in stock</dd>
+            <dd>{{ quantityDescription }}</dd>
 
             <dt>Price:</dt>
             <dd class="price">
@@ -196,21 +194,21 @@
 		  return {
 		    name: "Vue.js",
         page: 1,
-        "product": {
-          "id": 0,
-          "name": "My updated product",
-          "price": "219.00",
-          "department": "Home",
-          "color": "#51452b",
-          "description": "Consequatur nam distinctio modi et omnis odio optio. Ut ipsum voluptatem. Voluptatem est voluptatem a. Sed et et sunt aut. Error hic dolor quas velit aut omnis repudiandae.",
-          "photo": "/product-photos/1.jpeg",
-          "inStock": 3,
-          "materials": [
-            "Granite",
-            "Plastic"
-          ]
-        },
         "products": [
+          {
+            "id": 0,
+            "name": "My updated product",
+            "price": "219.00",
+            "department": "Home",
+            "color": "#51452b",
+            "description": "Consequatur nam distinctio modi et omnis odio optio. Ut ipsum voluptatem. Voluptatem est voluptatem a. Sed et et sunt aut. Error hic dolor quas velit aut omnis repudiandae.",
+            "photo": "/product-photos/1.jpeg",
+            "inStock": 3,
+            "materials": [
+              "Granite",
+              "Plastic"
+            ]
+          },
           {
             "id": 1,
             "name": "Intelligent Soft Computer",
@@ -272,8 +270,23 @@
       }
     },
 		methods: {
-		  incrementPage() {
-		    this.page += 1;
+      incrementPage() {
+        this.page += 1;
+      }
+    },
+    computed: {
+		  product() {
+		    return (this.products.length > 0) ? this.products[0] : {};
+      },
+      quantityDescription() {
+		    console.log("describe", this.product.name);
+        if (this.product.inStock <= 0) {
+          return "out of stock";
+        } else if (this.product.inStock < 5) {
+          return "a few";
+        } else {
+          return "plenty in stock"
+        }
       }
 		}
 	}
