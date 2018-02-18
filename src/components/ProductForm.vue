@@ -1,6 +1,11 @@
 <template>
-  <div class="container">
-    <form action="#" class="box product-edit">
+  <form action="#" class="box product-edit">
+    <div class="spinner" v-if="isLoading" />
+    <template v-else-if="isError">
+      <span class="lozenge">Error</span>
+      There was an error when fetching the product.
+    </template>
+    <template v-else>
       <h2>Edit product X</h2>
 
       <div class="form-row">
@@ -81,42 +86,61 @@
 
       <button :disabled="$v.$invalid" class="btn">Save product</button>
       <span class="lozenge" v-if="$v.$invalid">ERRORS</span>
-    </form>
-  </div>
+    </template>
+  </form>
 </template>
 
 <script>
   import {required, numeric} from 'vuelidate/lib/validators';
+  import { getProductById } from '/src/productService';
 
   export default {
     props: {
-      product: {
-        type: Object,
+      id: {
+        type: Number,
         required: true
       }
     },
     data() {
       return {
-        name: this.product.name || "",
-        description: this.product.description || "",
-        photo: this.product.photo || "",
-        color: this.product.color || "#ffffff",
-        materials: this.product.materials || [],
-        department: this.product.department || "",
-        inStock: this.product.inStock || 0,
-        price: this.product.price || 0,
+        isLoading: true,
+        isError: false,
+
+        name: "",
+        description: "",
+        photo: "",
+        color: "#ffffff",
+        materials: [],
+        department: "",
+        inStock: 0,
+        price: 0,
       }
     },
+    created() {
+      this.fetchProduct();
+    },
     watch: {
-      product() {
-          this.name = this.product.name || "";
-          this.description = this.product.description || "";
-          this.photo = this.product.photo || "";
-          this.color = this.product.color || "#ffffff";
-          this.materials = this.product.materials || [];
-          this.department = this.product.department || "";
-          this.inStock = this.product.inStock || 0;
-          this.price = this.product.price || 0;
+      id() {
+        this.fetchProduct();
+      }
+    },
+    methods: {
+      fetchProduct() {
+        this.isLoading = true;
+        this.isError = false;
+        getProductById(this.id)
+          .then((product) => {
+            this.name = product.name || "";
+            this.description = product.description || "";
+            this.photo = product.photo || "";
+            this.color = product.color || "#ffffff";
+            this.materials = product.materials || [];
+            this.department = product.department || "";
+            this.inStock = product.inStock || 0;
+            this.price = product.price || 0;
+          })
+          .catch(() => this.isError = true)
+          .then(() => this.isLoading = false);
       }
     },
     validations: {

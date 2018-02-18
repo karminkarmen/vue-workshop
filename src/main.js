@@ -3,6 +3,8 @@ import Vuelidate from 'vuelidate';
 import VueRouter from 'vue-router';
 import App from '/src/App.vue'
 import ProductsList from '/src/components/ProductsList.vue';
+import ProductDetails from '/src/components/ProductDetails.vue';
+import ProductForm from '/src/components/ProductForm.vue';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
@@ -24,9 +26,12 @@ Vue.directive(
 	}
 );
 
+const idAsNumber = (r) => ({ id: +r.params.id });
 const router = new VueRouter({
 	routes: [
-		{ path: '/', component: ProductsList }
+		{ path: '/', component: ProductsList },
+		{ path: '/product/:id', component: ProductDetails, props: idAsNumber },
+		{ path: '/product/:id/edit', component: ProductForm, props: idAsNumber }
 	]
 });
 

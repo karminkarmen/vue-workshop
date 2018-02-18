@@ -1,6 +1,11 @@
 <template>
-  <div class="container">
-    <article class="product">
+  <article class="product">
+    <div class="spinner" v-if="isLoading" />
+    <template v-else-if="isError">
+      <span class="lozenge">Error</span>
+      There was an error when fetching the product.
+    </template>
+    <template v-else>
       <img class="product--image" :src="product.photo" alt="" v-style-when-broken />
       <div class="product--caption">
         <h1 class="product--name">
@@ -34,20 +39,29 @@
         </dl>
         <div class="product--footer">
           <div class="product--actions">
-            <a class="btn" href="#">Edit product</a>
+            <router-link class="btn" :to="'/product/' + product.id + '/edit'">Edit product</router-link>
           </div>
         </div>
       </div>
-    </article>
-  </div>
+    </template>
+  </article>
 </template>
 
 <script>
+  import { getProductById } from '/src/productService';
+
   export default {
     props: {
-      product: {
-        type: Object,
+      id: {
+        type: Number,
         required: true
+      }
+    },
+    data() {
+      return {
+        product: {},
+        isLoading: true,
+        isError: false
       }
     },
     computed: {
@@ -59,6 +73,24 @@
         } else {
           return "plenty in stock"
         }
+      }
+    },
+    created() {
+      this.fetchProduct();
+    },
+    watch: {
+      id() {
+        this.fetchProduct();
+      }
+    },
+    methods: {
+      fetchProduct() {
+        this.isLoading = true;
+        this.isError = false;
+        getProductById(this.id)
+          .then((p) => this.product = p)
+          .catch(() => this.isError = true)
+          .then(() => this.isLoading = false);
       }
     }
   }
