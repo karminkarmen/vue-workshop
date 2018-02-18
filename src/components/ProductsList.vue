@@ -2,7 +2,7 @@
   <div>
     <section class="container">
       <a class="btn" href="#less" @click.prevent="$emit('previous')">Previous page</a>
-      {{ page }}
+      <slot /> {{ page }}
       <a class="btn" href="#more" @click.prevent="$emit('next')">Next page</a>
     </section>
 
@@ -12,6 +12,7 @@
         <products-list-item
           v-for="product in products"
           :product="product"
+          :key="product.id"
         />
       </ul>
     </section>
