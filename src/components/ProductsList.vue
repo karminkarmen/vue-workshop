@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="$emit('previous')">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
       <slot /> {{ page }}
-      <a class="btn" href="#more" @click.prevent="$emit('next')">Next page</a>
+      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </section>
 
     <div v-show="isLoading" class="spinner"/>
@@ -20,20 +20,58 @@
 </template>
 
 <script>
+  import { getAllProducts } from '/src/productService';
   import ProductsListItem from "/src/components/ProductsListItem.vue";
 
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 1
+//    props: {
+//      page: {
+//        type: Number,
+//        default: 1
+//      },
+//      isLoading: Boolean,
+//      products: {
+//        type: Array,
+//        default() {
+//          return [];
+//        }
+//      }
+//    },
+    data: () => {
+      return {
+        page: 1,
+        products: [],
+        isLoading: true
+      }
+    },
+    created() {
+      this.reloadProducts();
+    },
+    methods: {
+      onClickNext() {
+        this.page += 1;
       },
-      isLoading: Boolean,
-      products: {
-        type: Array,
-        default() {
-          return [];
+      onClickPrevious() {
+        if (this.page > 1) {
+          this.page = this.page - 1;
         }
+      },
+      reloadProducts() {
+        this.isLoading = true;
+        getAllProducts(this.page)
+          .then((products) => this.products = products)
+          .catch(() => console.log("Error fetching products, this should never happen :D"))
+          .then(() => this.isLoading = false);
+      }
+    },
+    computed: {
+      product() {
+        return (this.products.length > 0) ? this.products[0] : {};
+      },
+    },
+    watch: {
+      page() {
+        this.reloadProducts();
       }
     },
     components: {
