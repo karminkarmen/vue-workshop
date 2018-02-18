@@ -1,14 +1,17 @@
 <template>
   <div>
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
-      <slot /> {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
+      <router-link class="btn" :to="{ path: '/', query: {page: page - 1}}" v-if="!isFirstPage">Previous page</router-link>
+      {{ page }}
+      <router-link class="btn" :to="{ path: '/', query: {page: page + 1}}" v-if="!noProducts">Next page</router-link>
     </section>
 
     <div v-show="isLoading" class="spinner"/>
     <section v-show="!isLoading" class="container">
-      <ul class="product-list">
+      <div v-if="noProducts">
+        No products. Try a different page.
+      </div>
+      <ul v-else class="product-list">
         <products-list-item
           v-for="product in products"
           :product="product"
@@ -24,22 +27,14 @@
   import ProductsListItem from "/src/components/ProductsListItem.vue";
 
   export default {
-//    props: {
-//      page: {
-//        type: Number,
-//        default: 1
-//      },
-//      isLoading: Boolean,
-//      products: {
-//        type: Array,
-//        default() {
-//          return [];
-//        }
-//      }
-//    },
+    props: {
+      page: {
+        type: Number,
+        default: 1
+      }
+    },
     data: () => {
       return {
-        page: 1,
         products: [],
         isLoading: true
       }
@@ -60,14 +55,17 @@
         this.isLoading = true;
         getAllProducts(this.page)
           .then((products) => this.products = products)
-          .catch(() => console.log("Error fetching products, this should never happen :D"))
+          .catch(() => this.products = [])
           .then(() => this.isLoading = false);
       }
     },
     computed: {
-      product() {
-        return (this.products.length > 0) ? this.products[0] : {};
+      isFirstPage() {
+        return this.page === 1;
       },
+      noProducts() {
+        return this.products.length === 0;
+      }
     },
     watch: {
       page() {
