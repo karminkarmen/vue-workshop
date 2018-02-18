@@ -3,87 +3,16 @@
 
     <navbar class="container" />
 
-    <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
-      {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
-    </section>
-
-    <div v-show="isLoading" class="spinner"/>
-    <section v-show="!isLoading" class="container">
-      <ul class="product-list">
-        <li class="product-list--product"
-          v-for="product in products"
-          :class="{ highlight: product.price < 300 }"
-        >
-          <div class="ribbon" :style="{ color: product.color }" />
-          <img class="product-list--product--image" :src="product.photo" alt="" v-style-when-broken />
-          <div class="product-list--product--caption">
-            <h4 class="product-list--product--name">
-              {{ product.name }}
-            </h4>
-            <p class="product-list--product--description">
-              {{ product.description }}
-            </p>
-          </div>
-          <div class="product-list--product--footer">
-            <template v-if="product.inStock > 0">
-              <p class="product-list--product--price price">
-                {{ product.price | asCurrency }}  <span class="lozenge" v-show="product.price > 20">free shipping</span>
-              </p>
-
-              <div class="product-list--product--actions">
-                <a class="btn" href="#">View product</a>
-              </div>
-            </template>
-            <template v-else>
-              <span class="lozenge">out of stock</span> 📦📦📦
-            </template>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <products-list
+      :products="products"
+      :page="page"
+      :isLoading="isLoading"
+      @previous="onClickPrevious"
+      @next="onClickNext"
+    />
 
     <div class="container">
-      <article class="product">
-        <img class="product--image" :src="product.photo" alt="" v-style-when-broken />
-        <div class="product--caption">
-          <h1 class="product--name">
-            {{ product.name }}
-          </h1>
-          <div class="product--category">
-            Category: <a href="#">{{ product.department }}</a>
-          </div>
-
-          <p class="product--description">
-            {{ product.description }}
-          <dl class="product--attributes">
-            <dt>Color:</dt>
-            <dd>
-              <div class="color-swatch" :style="{ background: product.color }"></div>
-            </dd>
-            <dt>Materials:</dt>
-            <dd>
-              <ul class="product--materials">
-                <li v-for="material in product.materials">{{ material }}</li>
-              </ul>
-            </dd>
-
-            <dt>Availability:</dt>
-            <dd>{{ quantityDescription }}</dd>
-
-            <dt>Price:</dt>
-            <dd class="price">
-              {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-            </dd>
-          </dl>
-          <div class="product--footer">
-            <div class="product--actions">
-              <a class="btn" href="#">Edit product</a>
-            </div>
-          </div>
-        </div>
-      </article>
+      <product-details :product="product" />
     </div>
 
     <div class="container">
@@ -183,6 +112,8 @@
 <script>
   import { getAllProducts } from '/src/productService';
   import Navbar from '/src/components/Navbar.vue';
+  import ProductsList from '/src/components/ProductsList.vue';
+  import ProductDetails from '/src/components/ProductDetails.vue';
 
 	export default {
 		data: () => {
@@ -233,7 +164,9 @@
       }
     },
     components: {
-      Navbar
+      Navbar,
+      ProductsList,
+      ProductDetails
     }
 	}
 </script>

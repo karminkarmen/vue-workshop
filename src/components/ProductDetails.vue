@@ -1,0 +1,113 @@
+<template>
+  <div class="container">
+    <article class="product">
+      <img class="product--image" :src="product.photo" alt="" v-style-when-broken />
+      <div class="product--caption">
+        <h1 class="product--name">
+          {{ product.name }}
+        </h1>
+        <div class="product--category">
+          Category: <a href="#">{{ product.department }}</a>
+        </div>
+
+        <p class="product--description">
+          {{ product.description }}
+        <dl class="product--attributes">
+          <dt>Color:</dt>
+          <dd>
+            <div class="color-swatch" :style="{ background: product.color }"></div>
+          </dd>
+          <dt>Materials:</dt>
+          <dd>
+            <ul class="product--materials">
+              <li v-for="material in product.materials">{{ material }}</li>
+            </ul>
+          </dd>
+
+          <dt>Availability:</dt>
+          <dd>{{ quantityDescription }}</dd>
+
+          <dt>Price:</dt>
+          <dd class="price">
+            {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
+          </dd>
+        </dl>
+        <div class="product--footer">
+          <div class="product--actions">
+            <a class="btn" href="#">Edit product</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: {
+      product: {
+        type: Object,
+        required: true
+      }
+    },
+    computed: {
+      quantityDescription() {
+        if (this.product.inStock <= 0) {
+          return "out of stock";
+        } else if (this.product.inStock < 5) {
+          return "a few";
+        } else {
+          return "plenty in stock"
+        }
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "../assets/style";
+
+
+  .product {
+    @extend .box;
+    @include clearfix();
+    @include productCommons();
+
+    &--image {
+      position: relative;
+      float: right;
+      max-width: 300px;
+      margin-left: $gutter;
+      z-index: 1;
+    }
+
+    &--attributes {
+      $verticalPadding: $gutter/3;
+      position: relative;
+      border-top: solid 1px #ccc;
+      max-width: 400px;
+      dt {
+        padding: $verticalPadding;
+        position: absolute;
+        left: 0;
+      }
+      dd {
+        margin: 0;
+        padding: $verticalPadding $verticalPadding $verticalPadding 120px;
+
+        border-bottom: solid 1px #ccc;
+
+        ul {
+          margin: 0;
+          padding: 0 20px;
+        }
+      }
+    }
+  }
+  .color-swatch {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+  }
+</style>
