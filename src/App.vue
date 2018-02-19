@@ -7,6 +7,8 @@
       :products="products"
       :isLoading="isLoading"
       :page="page"
+      @previousPage="onClickPrevious"
+      @nextPage="onClickNext"
     />
 
     <product-details :product="product" />

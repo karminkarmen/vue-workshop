@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="$emit('previousPage')">Previous page</a>
       {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
+      <a class="btn" href="#more" @click.prevent="$emit('nextPage')">Next page</a>
     </section>
 
     <section class="container">
@@ -34,16 +34,6 @@
       products: {
         type: Array,
         required: true
-      }
-    },
-    methods: {
-      onClickPrevious() {
-        if (this.page > 1) {
-          this.page -= 1;
-        }
-      },
-      onClickNext() {
-        this.page += 1;
       }
     },
     components: {
