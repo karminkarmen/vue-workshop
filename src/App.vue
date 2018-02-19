@@ -1,14 +1,7 @@
 <template>
   <div id="app">
 
-    <nav class="navbar container">
-      <a class="navbar--brand" href="#" :title="name + 'asd asdf asdf'">{{ name }}</a>
-      <ul class="navbar--menu">
-        <li class="active"><a href="#">Somewhere</a></li>
-        <li class="active"><a href="#">Over</a></li>
-        <li class="active"><a href="#">The rainbow</a></li>
-      </ul>
-    </nav>
+    <navbar />
 
     <section class="container">
       <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
@@ -192,6 +185,7 @@
 
 <script>
   import { getAllProducts } from '/src/productService';
+  import Navbar from '/src/components/Navbar.vue';
 
 	export default {
 		data() {
@@ -242,6 +236,9 @@
 		  onClickNext() {
         this.page += 1;
       }
+    },
+    components: {
+      Navbar
     }
 	}
 </script>
