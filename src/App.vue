@@ -78,9 +78,7 @@
             </dd>
 
             <dt>Availability:</dt>
-            <dd v-if="product.inStock <= 0">out of stock</dd>
-            <dd v-else-if="product.inStock <= 5">a few</dd>
-            <dd v-else>plenty!</dd>
+            <dd>{{ quantityDescription }}</dd>
 
             <dt>Price:</dt>
             <dd class="price">
@@ -198,7 +196,8 @@
 		  return {
 		    name: "Vue.js (work)shop",
         page: 1,
-        product: {
+        products: [
+          {
           "id": 0,
           "name": "My updated product",
           "price": "219.00",
@@ -212,7 +211,7 @@
             "Plastic"
           ]
         },
-        products: [
+
         {
           "id": 1,
           "name": "Intelligent Soft Computer",
@@ -273,10 +272,26 @@
       ]
       }
     },
+    computed: {
+		  product() {
+		    return (this.products.length > 0) ? this.products[0] : {};
+      },
+      quantityDescription() {
+        console.log("describe called");
+
+        if (this.product.inStock <= 0) {
+          return "out of stock";
+        } else if (this.product.inStock <= 5) {
+          return "a few";
+        } else {
+          return "plenty";
+        }
+      }
+    },
     methods: {
 		  onClickNext() {
         this.page += 1;
-      },
+      }
     }
 	}
 </script>
