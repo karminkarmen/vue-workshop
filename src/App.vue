@@ -11,7 +11,7 @@
     </nav>
 
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="(page > 1) ? page -= 1 : null">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
       {{ page }}
       <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </section>
@@ -190,6 +190,7 @@
 </template>
 
 <script>
+  import { getAllProducts } from '/src/productService';
 
 	export default {
 		data() {
@@ -288,7 +289,19 @@
         }
       }
     },
+    watch: {
+		  page() {
+        getAllProducts(this.page)
+          .then((products) => this.products = products)
+          .catch(() => this.products = []);
+      }
+    },
     methods: {
+		  onClickPrevious() {
+        if (this.page > 1) {
+          this.page -= 1;
+        }
+      },
 		  onClickNext() {
         this.page += 1;
       }
