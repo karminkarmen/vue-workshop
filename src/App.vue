@@ -30,13 +30,18 @@
             </p>
           </div>
           <div class="product-list--product--footer">
-            <p class="product-list--product--price price">
-              ${{ product.price }} <span class="lozenge">free shipping</span>
-            </p>
+            <template v-if="product.inStock > 0">
+              <p class="product-list--product--price price">
+                ${{ product.price }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
+              </p>
 
-            <div class="product-list--product--actions">
-              <a class="btn" href="#">View product</a>
-            </div>
+              <div class="product-list--product--actions">
+                <a class="btn" href="#">View product</a>
+              </div>
+            </template>
+            <template v-else>
+              <span class="lozenge">OUT OF STOCK</span> 🐼
+            </template>
           </div>
         </li>
       </ul>
@@ -71,11 +76,13 @@
             </dd>
 
             <dt>Availability:</dt>
-            <dd>a few</dd>
+            <dd v-if="product.inStock <= 0">out of stock</dd>
+            <dd v-else-if="product.inStock <= 5">a few</dd>
+            <dd v-else>plenty!</dd>
 
             <dt>Price:</dt>
             <dd class="price">
-              ${{ product.price }} <span class="lozenge">free shipping</span>
+              ${{ product.price }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
             </dd>
           </dl>
           <div class="product--footer">
@@ -84,7 +91,7 @@
             </div>
           </div>
         </div>
-      </article>
+      </article>k
     </div>
 
     <div class="container">
