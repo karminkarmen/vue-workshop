@@ -35,3 +35,22 @@ $gutter: 30px;
   margin-bottom: $gutter;
   box-sizing: border-box;
 }
+
+
+@mixin productCommons() {
+  position: relative;
+
+  &--image {
+    max-width: 100%;
+    margin-bottom: $gutter/2;
+  }
+
+  &--name {
+    margin: 0 0 $gutter/6;
+  }
+  &--category {
+    display: block;
+    margin: 0;
+    font-size: asRem(10px);
+  }
+}

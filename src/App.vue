@@ -3,90 +3,13 @@
 
     <navbar />
 
-    <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
-      {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
-    </section>
+    <ProductsList
+      :products="products"
+      :isLoading="isLoading"
+      :page="page"
+    />
 
-    <section class="container">
-      <div v-if="isLoading" class="spinner" />
-      <ul v-else class="product-list">
-        <li v-for="product in products"
-          :key="product.id"
-          class="product-list--product"
-          :class="{ highlight: product.price < 300 }"
-        >
-          <div class="ribbon" :style="{ color: product.color }" />
-          <img class="product-list--product--image" :src="product.photo" v-style-when-broken alt=""/>
-          <div class="product-list--product--caption">
-            <h4 class="product-list--product--name">
-              {{ product.name }}
-            </h4>
-            <p class="product-list--product--description">
-              {{ product.description }}
-            </p>
-          </div>
-          <div class="product-list--product--footer">
-            <template v-if="product.inStock > 0">
-              <p class="product-list--product--price price">
-                {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-              </p>
-
-              <div class="product-list--product--actions">
-                <a class="btn" href="#">View product</a>
-              </div>
-            </template>
-            <template v-else>
-              <span class="lozenge">OUT OF STOCK</span> 🐼
-            </template>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <div class="container">
-      <article class="product">
-        <img class="product--image" :src="product.photo" v-style-when-broken alt=""/>
-        <div class="product--caption">
-          <h1 class="product--name">
-            {{ product.name }}
-          </h1>
-          <div class="product--category">
-            Category: <a href="#">{{ product.department }}</a>
-          </div>
-
-          <p class="product--description">
-            {{ product.description }}
-          </p>
-          <dl class="product--attributes">
-            <dt>Color:</dt>
-            <dd>
-              <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
-            </dd>
-            <dt>Materials:</dt>
-            <dd>
-              <ul class="product--materials">
-                <li v-for="(material, index) in product.materials" :key="index">{{ material }}</li>
-              </ul>
-            </dd>
-
-            <dt>Availability:</dt>
-            <dd>{{ quantityDescription }}</dd>
-
-            <dt>Price:</dt>
-            <dd class="price">
-              {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-            </dd>
-          </dl>
-          <div class="product--footer">
-            <div class="product--actions">
-              <a class="btn" href="#">Edit product</a>
-            </div>
-          </div>
-        </div>
-      </article>k
-    </div>
+    <product-details :product="product" />
 
     <div class="container">
 
@@ -186,6 +109,8 @@
 <script>
   import { getAllProducts } from '/src/productService';
   import Navbar from '/src/components/Navbar.vue';
+  import ProductDetails from '/src/components/ProductDetails.vue';
+  import ProductsList from '/src/components/ProductsList.vue';
 
 	export default {
 		data() {
@@ -199,17 +124,6 @@
     computed: {
 		  product() {
 		    return (this.products.length > 0) ? this.products[0] : {};
-      },
-      quantityDescription() {
-        console.log("describe called");
-
-        if (this.product.inStock <= 0) {
-          return "out of stock";
-        } else if (this.product.inStock <= 5) {
-          return "a few";
-        } else {
-          return "plenty";
-        }
       }
     },
     created() {
@@ -238,7 +152,9 @@
       }
     },
     components: {
-      Navbar
+      Navbar,
+      ProductDetails,
+      ProductsList
     }
 	}
 </script>

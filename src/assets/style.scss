@@ -4,8 +4,6 @@
   @include box();
 }
 
-
-
 .lozenge,
 body {
   font-family: Helvetica, Arial, sans-serif;
@@ -37,88 +35,6 @@ a {
   &:hover {
     color: darken($c-primary, 10%);
     text-decoration: underline;
-  }
-}
-
-@mixin productCommons() {
-  position: relative;
-
-  &--image {
-    max-width: 100%;
-    margin-bottom: $gutter/2;
-  }
-
-  &--name {
-    margin: 0 0 $gutter/6;
-  }
-  &--category {
-    display: block;
-    margin: 0;
-    font-size: asRem(10px);
-  }
-}
-
-.product-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 0 (-$gutter);
-  display: flex;
-  flex-wrap: wrap;
-
-  &--product {
-    $inRow: 4;
-    @extend .box;
-    display: flex;
-    flex-direction: column;
-    flex-basis: calc(#{100%/$inRow} - #{$gutter});
-    margin-left: $gutter;
-
-    &--description{
-      font-size: asRem(14px);
-    }
-
-    &--caption {
-      flex: 1 1 auto;
-    }
-
-    @include productCommons();
-  }
-}
-
-.product {
-  @extend .box;
-  @include clearfix();
-  @include productCommons();
-
-  &--image {
-    position: relative;
-    float: right;
-    max-width: 300px;
-    margin-left: $gutter;
-    z-index: 1;
-  }
-
-  &--attributes {
-    $verticalPadding: $gutter/3;
-    position: relative;
-    border-top: solid 1px #ccc;
-    max-width: 400px;
-    dt {
-      padding: $verticalPadding;
-      position: absolute;
-      left: 0;
-    }
-    dd {
-      margin: 0;
-      padding: $verticalPadding $verticalPadding $verticalPadding 120px;
-
-      border-bottom: solid 1px #ccc;
-
-      ul {
-        margin: 0;
-        padding: 0 20px;
-      }
-    }
   }
 }
 
