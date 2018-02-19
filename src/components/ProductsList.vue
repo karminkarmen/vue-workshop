@@ -6,9 +6,9 @@
       <router-link class="btn" :to="{ path: '/', query: {page: page + 1}}" v-if="!noProducts">Next page</router-link>
     </section>
 
-    <div v-show="isLoading" class="spinner"/>
-    <section v-show="!isLoading" class="container">
-      <div v-if="noProducts">
+    <div v-show="productsStatus.isLoading" class="spinner"/>
+    <section v-show="!productsStatus.isLoading" class="container">
+      <div class="box" v-if="productsStatus.error">
         No products. Try a different page.
       </div>
       <ul v-else class="product-list">
@@ -24,7 +24,6 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import { getAllProducts } from '/src/productService';
   import ProductsListItem from "/src/components/ProductsListItem.vue";
 
   export default {
@@ -34,21 +33,17 @@
       }
     },
     created() {
-      this.reloadProducts();
+      this.fetchProducts();
     },
     methods: {
-      ...mapActions(["updateProducts"]),
-      reloadProducts() {
-        this.isLoading = true;
-        getAllProducts(this.page)
-          .then((products) => this.updateProducts(products))
-          .catch(() => this.updateProducts([]))
-          .then(() => this.isLoading = false);
-      }
+      ...mapActions([
+        "fetchProducts"
+      ]),
     },
     computed: {
       ...mapGetters([
-        "products"
+        "products",
+        "productsStatus"
       ]),
       ...mapGetters({
         page: "currentPageNumber"
@@ -62,7 +57,7 @@
     },
     watch: {
       page() {
-        this.reloadProducts();
+        this.fetchProducts();
       }
     },
     components: {
