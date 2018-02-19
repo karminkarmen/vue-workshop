@@ -28,12 +28,6 @@
   import ProductsListItem from "/src/components/ProductsListItem.vue";
 
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 1
-      }
-    },
     data: () => {
       return {
         isLoading: true
@@ -44,14 +38,6 @@
     },
     methods: {
       ...mapActions(["updateProducts"]),
-      onClickNext() {
-        this.page += 1;
-      },
-      onClickPrevious() {
-        if (this.page > 1) {
-          this.page = this.page - 1;
-        }
-      },
       reloadProducts() {
         this.isLoading = true;
         getAllProducts(this.page)
@@ -61,7 +47,12 @@
       }
     },
     computed: {
-      ...mapGetters(["products"]),
+      ...mapGetters([
+        "products"
+      ]),
+      ...mapGetters({
+        page: "currentPageNumber"
+      }),
       isFirstPage() {
         return this.page === 1;
       },
