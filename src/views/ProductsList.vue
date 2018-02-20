@@ -35,6 +35,14 @@
       }
     },
     computed: {
+      computedProducts: {
+        ...mapGetters({
+          get: "products"
+        }),
+        ...mapActions({
+          set: "updateProducts"
+        }),
+      },
       ...mapGetters([
         "products"
       ]),
