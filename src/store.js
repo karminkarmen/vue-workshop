@@ -8,7 +8,8 @@ export default new Vuex.Store({
     products: []
   },
   getters: {
-    products: (state) => state.products
+    products: (state) => state.products,
+    currentPageNumber: (state, getters, rootState) => +rootState.route.query.page || 1
   },
   actions: {
     updateProducts({ commit }, newProducts) {

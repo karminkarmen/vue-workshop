@@ -7,6 +7,7 @@ import ProductsList from '/src/views/ProductsList.vue';
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 import Vuelidate from 'vuelidate';
+import {sync} from 'vuex-router-sync';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
@@ -30,7 +31,7 @@ const idAsProp = (r) => ({ id: +r.params.id });
 
 const router = new VueRouter({
 	routes: [
-		{ name: "productsList", path: '/', component: ProductsList, props: (r) => ({ page: +r.query.page || 1 }) },
+		{ name: "productsList", path: '/', component: ProductsList},
 		{ name: "productDetails", path: '/product/:id', component: ProductDetails, props: idAsProp },
 		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
 		{ name: "NotFound", path: '/404', component: NotFound},
@@ -48,6 +49,7 @@ router.beforeEach((to, from, next) => {
 	}
 });
 
+sync(store, router);
 new Vue({
 	render: h => h(App),
 	router,

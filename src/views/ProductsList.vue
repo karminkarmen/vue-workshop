@@ -25,12 +25,8 @@
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
-    props: {
-      page: Number
-    },
     data() {
       return {
-        name: "Vue.js (work)shop",
         isLoading: true
       }
     },
@@ -46,6 +42,9 @@
       ...mapGetters([
         "products"
       ]),
+      ...mapGetters({
+        page: "currentPageNumber"
+      }),
       hasPrevious() {
         return this.page > 1
       },
