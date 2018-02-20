@@ -1,6 +1,6 @@
 <template>
   <loading-state v-bind="{ isLoading, isError }">
-    <form action="#" class="box product-edit">
+    <form @submit.prevent="saveProduct" class="box product-edit">
       <h2>Edit product {{ name }}</h2>
 
       <div class="form-row">
@@ -81,17 +81,20 @@
         <input type="text" v-model.number="price" @change="$v.price.$touch()" id="edit-price" />
       </div>
 
-      <button class="btn" :disabled="$v.$invalid">Save product</button>
+      <button type="submit" class="btn" :disabled="$v.$invalid">Save product</button>
       <span v-show="$v.$invalid" class="lozenge">
         Errors in the form, please correct.
       </span>
+      <div v-if="saveError">
+        <span class="lozenge">Error</span> check you fields, something is wrong.
+      </div>
     </form>
   </loading-state>
 </template>
 
 <script>
   import { numeric, required } from 'vuelidate/lib/validators/';
-  import { getProductById } from '/src/productService';
+  import { getProductById, updateProduct } from '/src/productService';
   import LoadingState from '/src/components/LoadingState.vue';
 
   export default {
@@ -106,6 +109,7 @@
         product: {},
         isLoading: false,
         isError: false,
+        saveError: false,
 
         name: "",
         description: "",
@@ -141,7 +145,7 @@
       fetchProduct() {
 
         this.isLoading = true;
-        this.isError = null;
+        this.isError = false;
         if (this.id >= 0) {
           getProductById(this.id)
             .then((p) => this.product = p)
@@ -151,6 +155,29 @@
           this.isLoading = false;
           this.isError = true
         }
+      },
+      saveProduct() {
+        if (!this.$v.$invalid) {
+          this.isLoading = true;
+          this.saveError = false;
+
+          updateProduct({
+              id: this.id,
+
+              name: this.name,
+              description: this.description,
+              photo: this.photo,
+              color: this.color,
+              materials: this.materials,
+              department: this.department,
+              inStock: this.inStock,
+              price: this.price
+          })
+            .then(() => this.$router.push({ name: "productDetails", params: { id: this.id }}))
+            .catch(() => this.saveError = true)
+            .then(() => this.isLoading = false)
+        }
+
       }
     },
     validations: {

@@ -29,7 +29,7 @@ const idAsProp = (r) => ({ id: +r.params.id });
 const router = new VueRouter({
 	routes: [
 		{ name: "productsList", path: '/', component: ProductsList, props: (r) => ({ page: +r.query.page || 1 }) },
-		{ path: '/product/:id', component: ProductDetails, props: idAsProp },
+		{ name: "productDetails", path: '/product/:id', component: ProductDetails, props: idAsProp },
 		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
 	]
 });
