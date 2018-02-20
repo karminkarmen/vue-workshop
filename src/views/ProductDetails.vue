@@ -41,7 +41,7 @@
           </dl>
           <div class="product--footer">
             <div class="product--actions">
-              <router-link class="btn" :to="'/product/' + product.id + '/edit'">Edit product</router-link>
+              <router-link class="btn" :to="`/product/${product.id}/edit`">Edit product</router-link>
             </div>
           </div>
         </div>

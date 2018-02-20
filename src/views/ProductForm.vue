@@ -1,7 +1,12 @@
 <template>
   <div class="container">
-
-    <form action="#" class="box product-edit">
+    <div class="box" v-if="isError">
+      Error fetching product.
+    </div>
+    <div class="box" v-else-if="isLoading">
+      <div class="spinner"></div>
+    </div>
+    <form v-else action="#" class="box product-edit">
       <h2>Edit product {{ name }}</h2>
 
       <div class="form-row">
@@ -92,6 +97,7 @@
 
 <script>
   import { numeric, required } from 'vuelidate/lib/validators/';
+  import { getProductById } from '/src/productService';
 
   export default {
     props: {
@@ -103,15 +109,21 @@
     data() {
       return {
         product: {},
-        name: this.product.name || "",
-        description: this.product.description || "",
-        photo: this.product.photo || "",
-        color: this.product.color || "#ffffff",
-        materials: this.product.materials || [],
-        department: this.product.department || "",
-        inStock: this.product.inStock || 0,
-        price: this.product.price || 0,
+        isLoading: false,
+        isError: false,
+
+        name: "",
+        description: "",
+        photo: "",
+        color: "#ffffff",
+        materials: [],
+        department: "",
+        inStock: 0,
+        price: 0,
       }
+    },
+    created() {
+      this.fetchProduct();
     },
     watch: {
       product() {
@@ -125,6 +137,25 @@
         this.department = p.department || "";
         this.inStock = p.inStock || 0;
         this.price = p.price || 0;
+      },
+      id() {
+        this.fetchProduct();
+      }
+    },
+    methods: {
+      fetchProduct() {
+
+        this.isLoading = true;
+        this.isError = null;
+        if (this.id >= 0) {
+          getProductById(this.id)
+            .then((p) => this.product = p)
+            .catch((e) => this.isError = e)
+            .then(() => this.isLoading = false);
+        } else {
+          this.isLoading = false;
+          this.isError = true
+        }
       }
     },
     validations: {
