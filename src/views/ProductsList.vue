@@ -7,7 +7,7 @@
     </section>
 
     <section class="container">
-      <div v-if="isLoading" class="spinner" />
+      <div v-if="productsStatus.isLoading" class="spinner" />
       <ul v-else class="product-list">
         <products-list-item
           v-for="product in products"
@@ -21,15 +21,9 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import { getAllProducts } from '/src/productService';
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
-    data() {
-      return {
-        isLoading: true
-      }
-    },
     computed: {
       computedProducts: {
         ...mapGetters({
@@ -40,7 +34,8 @@
         }),
       },
       ...mapGetters([
-        "products"
+        "products",
+        "productsStatus"
       ]),
       ...mapGetters({
         page: "currentPageNumber"
@@ -62,15 +57,9 @@
     },
     methods: {
       ...mapActions([
-        "updateProducts"
+        "updateProducts",
+        "fetchProducts"
       ]),
-      fetchProducts() {
-        this.isLoading = true;
-        getAllProducts(this.page)
-          .then((products) => this.updateProducts(products))
-          .catch(() => this.updateProducts([]))
-          .then(() => this.isLoading = false);
-      }
     },
     components: {
       ProductsListItem
