@@ -23,6 +23,7 @@ Vue.directive("style-when-broken", (el) => {
 });
 
 const router = new VueRouter({
+	mode: "history",
 	routes: [
 		{ path: '/', component: ProductsList }
 	]
