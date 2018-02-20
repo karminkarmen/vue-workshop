@@ -3,6 +3,8 @@ import Vuelidate from 'vuelidate';
 import VueRouter from 'vue-router';
 import App from '/src/App.vue'
 import ProductsList from '/src/views/ProductsList.vue';
+import ProductDetails from '/src/views/ProductDetails.vue';
+import ProductForm from '/src/views/ProductForm.vue';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
@@ -22,10 +24,13 @@ Vue.directive("style-when-broken", (el) => {
 	}
 });
 
+const idAsProp = (r) => ({ id: +r.params.id });
+
 const router = new VueRouter({
-	mode: "history",
 	routes: [
-		{ path: '/', component: ProductsList }
+		{ path: '/', component: ProductsList },
+		{ path: '/product/:id', component: ProductDetails, props: idAsProp },
+		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
 	]
 });
 

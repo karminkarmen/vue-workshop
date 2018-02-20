@@ -95,13 +95,14 @@
 
   export default {
     props: {
-      product: {
-        type: Object,
+      id: {
+        type: Number,
         required: true
       }
     },
     data() {
       return {
+        product: {},
         name: this.product.name || "",
         description: this.product.description || "",
         photo: this.product.photo || "",

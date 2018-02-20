@@ -48,7 +48,7 @@ app.get('/api/products', function (req, res) {
       console.log(`Fetch ${page} page of products`);
       res.json(products.slice(pageStartIndex, pageEndIndex));
     } else {
-      console.error(`Products page ${page} not found`);
+      console.isError(`Products page ${page} not found`);
       res.status(404).send();
     }
   }
@@ -62,7 +62,7 @@ app.get('/api/products/:id', function (req, res) {
     console.log(`Fetch product ${id}`);
     res.json(product);
   } else {
-    console.error(`Product ${id} not found`);
+    console.isError(`Product ${id} not found`);
     res.status(404).send();
   }
 });
@@ -105,7 +105,7 @@ app.patch('/api/products/:id', function (req, res) {
     res.json(store[id]);
     console.log(`Update product ${id}`);
   } else {
-    console.error(`Product ${id} not found`);
+    console.isError(`Product ${id} not found`);
     res.status(404).send();
   }
 });
@@ -120,7 +120,7 @@ app.delete('/api/products/:id', function (req, res) {
     res.status(204).send();
   } else {
     res.status(404).send();
-    console.error(`Product ${id} not found`);
+    console.isError(`Product ${id} not found`);
   }
 });
 
