@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate';
 import VueRouter from 'vue-router';
 import App from '/src/App.vue'
-import ProductsList from '/src/components/ProductsList.vue';
+import ProductsList from '/src/views/ProductsList.vue';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
