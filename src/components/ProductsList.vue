@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="$emit('previousPage')">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
       {{ page }}
-      <a class="btn" href="#more" @click.prevent="$emit('nextPage')">Next page</a>
+      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
     </section>
 
     <section class="container">
@@ -20,20 +20,46 @@
 </template>
 
 <script>
+  import { getAllProducts } from '/src/productService';
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 1
+    data() {
+      return {
+        name: "Vue.js (work)shop",
+        page: 1,
+        isLoading: true,
+        products: []
+      }
+    },
+    computed: {
+      product() {
+        return (this.products.length > 0) ? this.products[0] : {};
+      }
+    },
+    created() {
+      this.fetchProducts();
+    },
+    watch: {
+      page() {
+        this.fetchProducts();
+      }
+    },
+    methods: {
+      fetchProducts() {
+        this.isLoading = true;
+        getAllProducts(this.page)
+          .then((products) => this.products = products)
+          .catch(() => this.products = [])
+          .then(() => this.isLoading = false);
       },
-      isLoading: {
-        type: Boolean
+      onClickPrevious() {
+        if (this.page > 1) {
+          this.page -= 1;
+        }
       },
-      products: {
-        type: Array,
-        required: true
+      onClickNext() {
+        this.page += 1;
       }
     },
     components: {
