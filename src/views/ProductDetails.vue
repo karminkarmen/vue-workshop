@@ -1,6 +1,6 @@
 <template>
-  <loading-state :isError="isError" :isLoading="isLoading">
-    <article class="product">
+  <loading-state :isError="currentProductStatus.isError" :isLoading="!product || currentProductStatus.isLoading">
+    <article v-if="product" class="product">
       <img class="product--image" :src="product.photo" v-style-when-broken alt=""/>
       <div class="product--caption">
         <h1 class="product--name">
@@ -44,27 +44,20 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import { getProductById } from '/src/productService';
   import LoadingState from '/src/components/LoadingState.vue';
 
   export default {
-    props: {
-      id: {
-        type: Number,
-        required: true
-      }
-    },
-    data() {
-      return {
-        product: {},
-        isLoading: false,
-        isError: false
-      }
-    },
     computed: {
+      ...mapGetters({
+        id: "currentProductId",
+        product: "currentProduct",
+      }),
+      currentProductStatus() {
+        return this.$store.state.currentProductStatus; // never do this, nigdy
+      },
       quantityDescription() {
-        console.log("describe called");
-
         if (this.product.inStock <= 0) {
           return "out of stock";
         } else if (this.product.inStock <= 5) {
@@ -83,18 +76,12 @@
       }
     },
     methods: {
+      ...mapActions([
+        "fetchCurrentProduct"
+      ]),
       fetchProduct() {
-
-        this.isLoading = true;
-        this.isError = null;
-        if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => this.product = p)
-            .catch((e) => this.isError = e)
-            .then(() => this.isLoading = false);
-        } else {
-          this.isLoading = false;
-          this.isError = true
+        if (!this.product) {
+          this.fetchCurrentProduct();
         }
       }
     },

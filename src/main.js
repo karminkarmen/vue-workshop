@@ -32,7 +32,7 @@ const idAsProp = (r) => ({ id: +r.params.id });
 const router = new VueRouter({
 	routes: [
 		{ name: "productsList", path: '/', component: ProductsList},
-		{ name: "productDetails", path: '/product/:id', component: ProductDetails, props: idAsProp },
+		{ name: "productDetails", path: '/product/:id', component: ProductDetails},
 		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
 		{ name: "NotFound", path: '/404', component: NotFound},
 		{ path: '*', component: NotFound}
