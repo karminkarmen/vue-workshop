@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuelidate from 'vuelidate';
-import VueRouter from 'vue-router';
 import App from '/src/App.vue'
-import ProductsList from '/src/views/ProductsList.vue';
 import ProductDetails from '/src/views/ProductDetails.vue';
 import ProductForm from '/src/views/ProductForm.vue';
+import ProductsList from '/src/views/ProductsList.vue';
+import Vue from 'vue'
+import VueRouter from 'vue-router';
+import Vuelidate from 'vuelidate';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
@@ -28,7 +28,7 @@ const idAsProp = (r) => ({ id: +r.params.id });
 
 const router = new VueRouter({
 	routes: [
-		{ path: '/', component: ProductsList },
+		{ name: "productsList", path: '/', component: ProductsList, props: (r) => ({ page: +r.query.page || 1 }) },
 		{ path: '/product/:id', component: ProductDetails, props: idAsProp },
 		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
 	]

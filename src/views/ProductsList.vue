@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="onClickPrevious">Previous page</a>
+      <router-link class="btn" v-if="hasPrevious" :to="{ name: 'productsList', query: { page: page - 1 }}">Previous page</router-link>
       {{ page }}
-      <a class="btn" href="#more" @click.prevent="onClickNext">Next page</a>
+      <router-link class="btn" v-if="hasNext" :to="{ name: 'productsList', query: { page: page + 1 }}">Next page</router-link>
     </section>
 
     <section class="container">
@@ -24,17 +24,22 @@
   import ProductsListItem from "/src/components/ProductsListItem";
 
   export default {
+    props: {
+      page: Number
+    },
     data() {
       return {
         name: "Vue.js (work)shop",
-        page: 1,
         isLoading: true,
         products: []
       }
     },
     computed: {
-      product() {
-        return (this.products.length > 0) ? this.products[0] : {};
+      hasPrevious() {
+        return this.page > 1
+      },
+      hasNext() {
+        return this.products.length > 0;
       }
     },
     created() {
@@ -52,14 +57,6 @@
           .then((products) => this.products = products)
           .catch(() => this.products = [])
           .then(() => this.isLoading = false);
-      },
-      onClickPrevious() {
-        if (this.page > 1) {
-          this.page -= 1;
-        }
-      },
-      onClickNext() {
-        this.page += 1;
       }
     },
     components: {
