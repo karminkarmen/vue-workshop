@@ -1,7 +1,7 @@
 <template>
   <article class="product">
-    <div class="spinner" v-if="isLoading" />
-    <template v-else-if="isError">
+    <div class="spinner" v-if="status.isLoading" />
+    <template v-else-if="status.isError">
       <span class="lozenge">Error</span>
       There was an error when fetching the product.
     </template>
@@ -48,23 +48,15 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import { getProductById } from '/src/productService';
 
   export default {
-    props: {
-      id: {
-        type: Number,
-        required: true
-      }
-    },
-    data() {
-      return {
-        product: {},
-        isLoading: true,
-        isError: false
-      }
-    },
     computed: {
+      ...mapGetters({
+        product: "currentProduct",
+        status: "currentProductStatus"
+      }),
       quantityDescription() {
         if (this.product.inStock <= 0) {
           return "out of stock";
@@ -76,22 +68,15 @@
       }
     },
     created() {
-      this.fetchProduct();
+      this.fetchCurrentProduct();
     },
     watch: {
       id() {
-        this.fetchProduct();
+        this.fetchCurrentProduct();
       }
     },
     methods: {
-      fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-        getProductById(this.id)
-          .then((p) => this.product = p)
-          .catch(() => this.isError = true)
-          .then(() => this.isLoading = false);
-      }
+      ...mapActions(["fetchCurrentProduct"]),
     }
   }
 </script>

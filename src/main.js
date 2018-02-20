@@ -36,11 +36,11 @@ const router = new VueRouter({
 			component: ProductsList
 		},
 		{
-			path: '/product/:id',
-			component: ProductDetails,
-			props: idAsNumber },
+			path: '/product/:productId',
+			component: ProductDetails
+		},
 		{
-			path: '/product/:id/edit',
+			path: '/product/:productId/edit',
 			component: ProductForm,
 			props: idAsNumber
 		}
