@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <div class="box" v-if="isError">
-      Error fetching entity.
-    </div>
-    <div class="box" v-else-if="isLoading">
+    <div class="box" v-if="isLoading">
       <div class="spinner"></div>
     </div>
     <slot v-else></slot>
@@ -13,7 +10,14 @@
 <script>
 
   export default {
-    props: ["isError", "isLoading"]
+    props: ["isError", "isLoading"],
+    watch: {
+      isError() {
+        if (this.isError === true) {
+          this.$router.replace({ name: "NotFound" });
+        }
+      }
+    }
   }
 </script>
 

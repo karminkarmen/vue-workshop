@@ -1,4 +1,5 @@
 import App from '/src/App.vue'
+import NotFound from '/src/views/NotFound.vue';
 import ProductDetails from '/src/views/ProductDetails.vue';
 import ProductForm from '/src/views/ProductForm.vue';
 import ProductsList from '/src/views/ProductsList.vue';
@@ -31,6 +32,8 @@ const router = new VueRouter({
 		{ name: "productsList", path: '/', component: ProductsList, props: (r) => ({ page: +r.query.page || 1 }) },
 		{ name: "productDetails", path: '/product/:id', component: ProductDetails, props: idAsProp },
 		{ path: '/product/:id/edit', component: ProductForm, props: idAsProp },
+		{ name: "NotFound", path: '/404', component: NotFound},
+		{ path: '*', component: NotFound}
 	]
 });
 
