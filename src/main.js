@@ -1,4 +1,5 @@
 import App from '/src/App.vue'
+import store from '/src/store';
 import NotFound from '/src/views/NotFound.vue';
 import ProductDetails from '/src/views/ProductDetails.vue';
 import ProductForm from '/src/views/ProductForm.vue';
@@ -9,7 +10,7 @@ import Vuelidate from 'vuelidate';
 
 Vue.use(Vuelidate);
 Vue.use(VueRouter);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 Vue.filter("asCurrency", (price) => '$' + (+price).toFixed(2));
 
@@ -49,5 +50,6 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
 	render: h => h(App),
-	router
-}).$mount('#app')
+	router,
+  store
+}).$mount('#app');

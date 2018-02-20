@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import { getAllProducts } from '/src/productService';
   import ProductsListItem from "/src/components/ProductsListItem";
 
@@ -30,11 +31,13 @@
     data() {
       return {
         name: "Vue.js (work)shop",
-        isLoading: true,
-        products: []
+        isLoading: true
       }
     },
     computed: {
+      ...mapGetters([
+        "products"
+      ]),
       hasPrevious() {
         return this.page > 1
       },
@@ -51,11 +54,14 @@
       }
     },
     methods: {
+      ...mapActions([
+        "updateProducts"
+      ]),
       fetchProducts() {
         this.isLoading = true;
         getAllProducts(this.page)
-          .then((products) => this.products = products)
-          .catch(() => this.products = [])
+          .then((products) => this.updateProducts(products))
+          .catch(() => this.updateProducts([]))
           .then(() => this.isLoading = false);
       }
     },
