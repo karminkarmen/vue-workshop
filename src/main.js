@@ -37,6 +37,16 @@ const router = new VueRouter({
 	]
 });
 
+window.loggedIn = true;
+
+router.beforeEach((to, from, next) => {
+	if (window.loggedIn === true || to.name === "productsList" ) {
+		next();
+	} else {
+		next({name: "productsList"})
+	}
+});
+
 new Vue({
 	render: h => h(App),
 	router
