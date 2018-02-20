@@ -1,39 +1,43 @@
-<template>
-  <li class="product-list--product" :class="{ highlight: product.price < 300 }">
-    <div class="ribbon" :style="{ color: product.color }" />
-    <img class="product-list--product--image" :src="product.photo" v-style-when-broken alt=""/>
-    <div class="product-list--product--caption">
-      <h4 class="product-list--product--name">
-        {{ product.name }}
-      </h4>
-      <p class="product-list--product--description">
-        {{ product.description }}
-      </p>
-    </div>
-    <div class="product-list--product--footer">
-      <template v-if="product.inStock > 0">
-        <p class="product-list--product--price price">
-          {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-        </p>
-
-        <div class="product-list--product--actions">
-          <router-link class="btn" :to="'/product/' + product.id">View product</router-link>
-        </div>
-      </template>
-      <template v-else>
-        <span class="lozenge">OUT OF STOCK</span> 🐼
-      </template>
-    </div>
-  </li>
-</template>
-
-<script>
+<script type="jsx">
   export default {
     props: {
       product: {
         type: Object,
         required: true
       }
+    },
+    render() {
+      return (
+        <li class={{"product-list--product": true, highlight: this.product.price < 300}}>
+          <div class="ribbon" style={{color: this.product.color}}/>
+          <img class="product-list--product--image" src={this.product.photo} v-style-when-broken alt=""/>
+          <div class="product-list--product--caption">
+            <h4 class="product-list--product--name">
+              {this.product.name}
+            </h4>
+            <p class="product-list--product--description">
+              {this.product.description}
+            </p>
+          </div>
+          <div class="product-list--product--footer">
+            {this.product.inStock > 0
+              ? <div>
+                <p class="product-list--product--price price">
+                  {this.product.price} <span v-show={this.product.price > 20} class="lozenge">free shipping</span>
+                </p>
+
+                <div class="product-list--product--actions">
+                  <router-link class="btn" to={'/product/' + this.product.id}>View product</router-link>
+                </div>
+              </div>
+              : <div>
+                <span class="lozenge">OUT OF STOCK</span> 🐼
+              </div>
+            }
+
+          </div>
+        </li>
+      );
     }
   }
 </script>
@@ -49,7 +53,7 @@
     flex-basis: calc(#{100%/$inRow} - #{$gutter});
     margin-left: $gutter;
 
-    &--description{
+    &--description {
       font-size: asRem(14px);
     }
 
