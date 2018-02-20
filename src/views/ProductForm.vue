@@ -1,12 +1,6 @@
 <template>
-  <div class="container">
-    <div class="box" v-if="isError">
-      Error fetching product.
-    </div>
-    <div class="box" v-else-if="isLoading">
-      <div class="spinner"></div>
-    </div>
-    <form v-else action="#" class="box product-edit">
+  <loading-state v-bind="{ isLoading, isError }">
+    <form action="#" class="box product-edit">
       <h2>Edit product {{ name }}</h2>
 
       <div class="form-row">
@@ -92,12 +86,13 @@
         Errors in the form, please correct.
       </span>
     </form>
-  </div>
+  </loading-state>
 </template>
 
 <script>
   import { numeric, required } from 'vuelidate/lib/validators/';
   import { getProductById } from '/src/productService';
+  import LoadingState from '/src/components/LoadingState.vue';
 
   export default {
     props: {
@@ -167,6 +162,9 @@
       department: {required},
       inStock: {required, numeric},
       price: {required, numeric}
+    },
+    components: {
+      LoadingState
     }
   }
 </script>

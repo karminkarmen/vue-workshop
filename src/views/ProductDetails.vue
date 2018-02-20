@@ -1,57 +1,51 @@
 <template>
-    <div class="container">
-      <div class="box" v-if="isError">
-        Error fetching product.
-      </div>
-      <div class="box" v-else-if="isLoading">
-        <div class="spinner"></div>
-      </div>
-      <article v-else class="product">
-        <img class="product--image" :src="product.photo" v-style-when-broken alt=""/>
-        <div class="product--caption">
-          <h1 class="product--name">
-            {{ product.name }}
-          </h1>
-          <div class="product--category">
-            Category: <a href="#">{{ product.department }}</a>
-          </div>
+  <loading-state :isError="isError" :isLoading="isLoading">
+    <article class="product">
+      <img class="product--image" :src="product.photo" v-style-when-broken alt=""/>
+      <div class="product--caption">
+        <h1 class="product--name">
+          {{ product.name }}
+        </h1>
+        <div class="product--category">
+          Category: <a href="#">{{ product.department }}</a>
+        </div>
 
-          <p class="product--description">
-            {{ product.description }}
-          </p>
-          <dl class="product--attributes">
-            <dt>Color:</dt>
-            <dd>
-              <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
-            </dd>
-            <dt>Materials:</dt>
-            <dd>
-              <ul class="product--materials">
-                <li v-for="(material, index) in product.materials" :key="index">{{ material }}</li>
-              </ul>
-            </dd>
+        <p class="product--description">
+          {{ product.description }}
+        </p>
+        <dl class="product--attributes">
+          <dt>Color:</dt>
+          <dd>
+            <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
+          </dd>
+          <dt>Materials:</dt>
+          <dd>
+            <ul class="product--materials">
+              <li v-for="(material, index) in product.materials" :key="index">{{ material }}</li>
+            </ul>
+          </dd>
 
-            <dt>Availability:</dt>
-            <dd>{{ quantityDescription }}</dd>
+          <dt>Availability:</dt>
+          <dd>{{ quantityDescription }}</dd>
 
-            <dt>Price:</dt>
-            <dd class="price">
-              {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
-            </dd>
-          </dl>
-          <div class="product--footer">
-            <div class="product--actions">
-              <router-link class="btn" :to="`/product/${product.id}/edit`">Edit product</router-link>
-            </div>
+          <dt>Price:</dt>
+          <dd class="price">
+            {{ product.price | asCurrency }} <span v-show="product.price > 20" class="lozenge">free shipping</span>
+          </dd>
+        </dl>
+        <div class="product--footer">
+          <div class="product--actions">
+            <router-link class="btn" :to="`/product/${product.id}/edit`">Edit product</router-link>
           </div>
         </div>
-      </article>
-    </div>
-
+      </div>
+    </article>
+  </loading-state>
 </template>
 
 <script>
   import { getProductById } from '/src/productService';
+  import LoadingState from '/src/components/LoadingState.vue';
 
   export default {
     props: {
@@ -103,6 +97,9 @@
           this.isError = true
         }
       }
+    },
+    components: {
+      LoadingState
     }
   }
 </script>
