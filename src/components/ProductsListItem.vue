@@ -1,40 +1,37 @@
 <script type="jsx">
   export default {
-    props: {
-      product: {
-        type: Object,
-        required: true
-      }
-    },
-    render() {
+    functional: true,
+    render(h, { props }) {
+      const test = <div class="lozenge">TESTING</div>;
+      const level = (props.product.inStock % 3) + 1;
       return (
-        <li class={{"product-list--product": true, highlight: this.product.price < 300}}>
-          <div class="ribbon" style={{color: this.product.color}}/>
-          <img class="product-list--product--image" src={this.product.photo} v-style-when-broken alt=""/>
+        <li class={{"product-list--product": true, highlight: props.product.price < 300}}>
+          <div class="ribbon" style={{color: props.product.color}}/>
+          <img class="product-list--product--image" src={props.product.photo} v-style-when-broken alt=""/>
           <div class="product-list--product--caption">
-            <h4 class="product-list--product--name">
-              {this.product.name}
-            </h4>
+            <div class="product-list--product--name">
+              {h('h' + level, props.product.name)}
+            </div>
             <p class="product-list--product--description">
-              {this.product.description}
+              {props.product.description}
+              { props.product.price > 300 ? test : null }
             </p>
           </div>
           <div class="product-list--product--footer">
-            {this.product.inStock > 0
+            { props.product.price < 300 ? test : null }
+            {props.product.inStock > 0
               ? <div>
                 <p class="product-list--product--price price">
-                  {this.product.price} <span v-show={this.product.price > 20} class="lozenge">free shipping</span>
+                  {props.product.price} <span v-show={props.product.price > 20} class="lozenge">free shipping</span>
                 </p>
 
                 <div class="product-list--product--actions">
-                  <router-link class="btn" to={'/product/' + this.product.id}>View product</router-link>
+                  <router-link class="btn" to={'/product/' + props.product.id}>View product</router-link>
                 </div>
               </div>
               : <div>
                 <span class="lozenge">OUT OF STOCK</span> 🐼
-              </div>
-            }
-
+              </div>}
           </div>
         </li>
       );
