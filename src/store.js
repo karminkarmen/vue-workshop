@@ -7,7 +7,8 @@ const store = new Vuex.Store({
   state: {
     products: [],
     productsStatus: {},
-    currentProductStatus: {}
+    currentProductStatus: {},
+    saveProductStatus: {}
   },
   getters: {
     products: (state) => state.products,
@@ -15,7 +16,8 @@ const store = new Vuex.Store({
     currentPageNumber: (state, getters, rootState) => +rootState.route.query.page || 1,
     currentProductId: (state, getters, rootState) => +rootState.route.params.productId || 0,
     currentProduct: (state, getters) => getters.products.find((p) => p.id == getters.currentProductId),
-    currentProductStatus: (state, getters) => state.currentProductStatus
+    currentProductStatus: (state, getters) => state.currentProductStatus,
+    saveProductStatus: (state, getters) => state.saveProductStatus
   },
   actions: {
     updateProducts ({ commit }, newProducts) {
@@ -25,7 +27,7 @@ const store = new Vuex.Store({
     fetchProducts ({ dispatch, commit, getters }) {
       commit("updateProductsStatus", { isLoading: true });
 
-      getAllProducts(getters.currentPageNumber)
+      return getAllProducts(getters.currentPageNumber)
         .then((products) => dispatch("updateProducts", products))
         .catch((e) => {
           dispatch("updateProducts", []);
@@ -34,13 +36,25 @@ const store = new Vuex.Store({
     },
     updateOrAddProduct({ commit }, product) {
       commit("updateOrAddProduct", product);
-      commit("updateCurrentProductStatus", { isLoading: false });
     },
     fetchCurrentProduct({ dispatch, commit, getters }) {
       commit("updateCurrentProductStatus", { isLoading: true });
-      getProductById(getters.currentProductId)
-        .then((p) => dispatch("updateOrAddProduct", p))
-        .catch(() => commit("updateCurrentProductStatus", { error: true }))
+      return getProductById(getters.currentProductId)
+        .then((p) => {
+          dispatch("updateOrAddProduct", p);
+          commit("updateCurrentProductStatus", { isLoading: false });
+        })
+        .catch((e) => commit("updateCurrentProductStatus", { error: e }))
+    },
+    saveProduct({ dispatch, commit }, product) {
+      commit("updateSaveProductStatus", { isLoading: true });
+      return updateProduct(product)
+        .then((p) => {
+          dispatch("updateOrAddProduct", p);
+          commit("updateSaveProductStatus", { isLoading: false });
+        })
+        .catch((e) => commit("updateSaveProductStatus", { error: e }))
+
     }
   },
   mutations: {
@@ -60,6 +74,9 @@ const store = new Vuex.Store({
     },
     updateCurrentProductStatus(state, newStatus) {
       state.currentProductStatus = newStatus;
+    },
+    updateSaveProductStatus(state, newStatus) {
+      state.saveProductStatus = newStatus;
     }
   }
 });

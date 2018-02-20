@@ -1,7 +1,7 @@
 <template>
-  <form action="#" @submit.prevent="saveProduct" class="box product-edit">
-    <div class="spinner" v-if="isLoading" />
-    <template v-else-if="isError">
+  <form action="#" @submit.prevent="onSubmit" class="box product-edit">
+    <div class="spinner" v-if="currentProductStatus.isLoading" />
+    <template v-else-if="currentProductStatus.isError">
       <span class="lozenge">Error</span>
       There was an error when fetching the product.
     </template>
@@ -10,7 +10,7 @@
 
       <div class="form-row">
         <label for="edit-name">Name</label>
-        <input id="edit-name" v-model="name" @input="$v.name.$touch()" type="text" />
+        <input id="edit-name" v-model="name" type="text" />
       </div>
 
       <div class="form-row">
@@ -86,28 +86,18 @@
 
       <button :disabled="$v.$invalid" type="submit" class="btn">Save product</button>
       <span class="lozenge" v-if="$v.$invalid">ERRORS</span>
-      <span class="lozenge" v-if="saveError">Error saving form, check all fields or try again</span>
+      <span class="lozenge" v-if="saveProductStatus.error">Error saving form, check all fields or try again</span>
     </template>
   </form>
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex';
   import {required, numeric} from 'vuelidate/lib/validators';
-  import { getProductById, updateProduct } from '/src/productService';
 
   export default {
-    props: {
-      id: {
-        type: Number,
-        required: true
-      }
-    },
     data() {
       return {
-        isLoading: true,
-        isError: false,
-        saveError: false,
-
         name: "",
         description: "",
         photo: "",
@@ -121,17 +111,29 @@
     created() {
       this.fetchProduct();
     },
+    computed: {
+      ...mapGetters([
+        "currentProductId",
+        "currentProduct",
+        "currentProductStatus",
+        "saveProductStatus"
+      ])
+    },
     watch: {
-      id() {
+      currentProductId() {
         this.fetchProduct();
       }
     },
     methods: {
+      ...mapActions([
+        "fetchCurrentProduct",
+        "saveProduct"
+      ]),
       fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-        getProductById(this.id)
-          .then((product) => {
+        this.fetchCurrentProduct()
+          .then(() => {
+            const product = this.currentProduct;
+
             this.name = product.name || "";
             this.description = product.description || "";
             this.photo = product.photo || "";
@@ -140,15 +142,11 @@
             this.department = product.department || "";
             this.inStock = product.inStock || 0;
             this.price = product.price || 0;
-          })
-          .catch(() => this.isError = true)
-          .then(() => this.isLoading = false);
+          });
       },
-      saveProduct() {
-        if (!this.$v.$invalid && !this.isLoading) {
-          this.isLoading = true;
-          this.saveError = false;
-          updateProduct({
+      onSubmit() {
+        if (!this.$v.$invalid && !this.saveProductStatus.isLoading) {
+          this.saveProduct({
             id: this.id,
             name: this.name,
             description: this.description,
@@ -159,14 +157,15 @@
             inStock: this.inStock,
             price: this.price
           })
-            .then(() => this.$router.push('/product/' + this.id))
-            .catch(() => this.saveError = true)
-            .then(this.isLoading = false)
+            .then(() => {
+              if (!this.saveProductStatus.error) {
+                this.$router.push('/product/' + this.id)
+              }
+            })
         }
       }
     },
     validations: {
-      name: {required},
       description: {required},
       photo: {required},
       color: {required},
