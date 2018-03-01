@@ -90,33 +90,6 @@ a {
   }
 }
 
-.product-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 0 (-$gutter);
-  display: flex;
-  flex-wrap: wrap;
-
-  &--product {
-    $inRow: 4;
-    @extend .box;
-    display: flex;
-    flex-direction: column;
-    flex-basis: calc(#{100%/$inRow} - #{$gutter});
-    margin-left: $gutter;
-
-    &--description{
-      font-size: asRem(14px);
-    }
-
-    &--caption {
-      flex: 1 1 auto;
-    }
-
-    @include productCommons();
-  }
-}
-
 .ribbon {
   width: 30px;
   height: 30px;
