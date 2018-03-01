@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar container">
-      <a class="navbar--brand" href="#" :title="name">{{ name }} (work)shop</a>
+      <router-link class="navbar--brand" to="/" :title="name">{{ name }} (work)shop</router-link>
       <ul class="navbar--menu">
         <li class="active"><a href="#">Somewhere</a></li>
         <li class="active"><a href="#">Over</a></li>
