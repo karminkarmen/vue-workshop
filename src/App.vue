@@ -20,9 +20,10 @@
       <ul class="product-list">
         <li v-for="product in products"
           class="product-list--product"
+          :class="{ highlight: product.price < 300 }"
           :key="product.id"
         >
-          <div class="ribbon" style="color: orangered;" />
+          <div class="ribbon" :style="{ color: product.color }" />
           <img class="product-list--product--image" :src="product.photo" alt=""/>
           <div class="product-list--product--caption">
             <h4 class="product-list--product--name">{{ product.name }}</h4>
@@ -64,7 +65,7 @@
           <dl class="product--attributes">
             <dt>Color:</dt>
             <dd>
-              <div class="color-swatch" style="background-color: orangered;"></div>
+              <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
             </dd>
             <dt>Materials:</dt>
             <dd>
