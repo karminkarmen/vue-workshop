@@ -91,12 +91,12 @@
 
         <div class="form-row">
           <label for="edit-name">Name</label>
-          <input id="edit-name" v-model="product.name" type="text" />
+          <input id="edit-name" v-model.trim="product.name" type="text" />
         </div>
 
         <div class="form-row">
           <label for="edit-photo">Photo</label>
-          <input id="edit-photo" v-model="product.photo" type="text" />
+          <input id="edit-photo" v-model.trim.lazy="product.photo" type="text" />
           <img class="photo-preview" :src="product.photo" />
         </div>
 
@@ -107,23 +107,14 @@
 
         <div class="form-row">
           <label for="edit-color">Color</label>
-          <input type="color" v-model="product.color" id="edit-color" />
+          <input type="color" v-model.trim="product.color" id="edit-color" />
         </div>
 
         <div class="form-row">
           <label>Materials</label>
           <div>
             <label><input type="checkbox" value="Steel" v-model="product.materials"/> Steel</label>
-            <label><input type="checkbox" value="Wooden" v-model="product.materials"/> Wooden</label>
-            <label><input type="checkbox" value="Concrete" v-model="product.materials"/> Concrete</label>
-            <label><input type="checkbox" value="Plastic" v-model="product.materials"/> Plastic</label>
-            <label><input type="checkbox" value="Cotton" v-model="product.materials"/> Cotton</label>
-            <label><input type="checkbox" value="Granite" v-model="product.materials"/> Granite</label>
-            <label><input type="checkbox" value="Rubber" v-model="product.materials"/> Rubber</label>
-            <label><input type="checkbox" value="Metal" v-model="product.materials"/> Metal</label>
-            <label><input type="checkbox" value="Soft" v-model="product.materials"/> Soft</label>
-            <label><input type="checkbox" value="Fresh" v-model="product.materials"/> Fresh</label>
-            <label><input type="checkbox" value="Frozen" v-model="product.materials"/> Frozen</label>
+
           </div>
         </div>
 
@@ -162,7 +153,7 @@
 
         <div class="form-row">
           <label for="edit-price">Price</label>
-          <input type="number" v-model="product.price" id="edit-price" />
+          <input type="number" v-model.number="product.price" id="edit-price" />
         </div>
 
         <button class="btn">Save product</button>
