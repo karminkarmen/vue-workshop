@@ -156,24 +156,6 @@ button,
   }
 }
 
-.form-row {
-  $labelWidth: 150px;
-
-  position: relative;
-  padding-left: $labelWidth;
-  margin-bottom: $gutter/2;
-
-  & > label {
-    position: absolute;
-    margin-left: -$labelWidth;
-    padding: 5px 3px;
-  }
-  label {
-    display: block;
-    margin-bottom: $gutter/6;
-  }
-}
-
 select,
 textarea,
 input:not([type=color]) {
