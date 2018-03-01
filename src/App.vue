@@ -1,14 +1,7 @@
 <template>
   <div id="app">
 
-    <nav class="navbar container">
-      <a class="navbar--brand" href="#" :title="name">{{ name }} (work)shop</a>
-      <ul class="navbar--menu">
-        <li class="active"><a href="#">Somewhere</a></li>
-        <li class="active"><a href="#">Over</a></li>
-        <li class="active"><a href="#">The rainbow</a></li>
-      </ul>
-    </nav>
+    <navbar />
 
     <section class="container">
       <a class="btn" href="#less" @click.prevent="previousPage">Previous page</a>
@@ -183,11 +176,11 @@
   import { getAllProducts } from '/src/productService';
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
+  import Navbar from '/src/components/Navbar.vue';
 
 	export default {
 		data() {
 		  return {
-		    name: "Vue.js for Profitroom",
         page: 1,
         isLoading: true,
         products: []
@@ -240,8 +233,10 @@
     },
     directives: {
       styleWhenBroken
+    },
+    components: {
+      Navbar
     }
-
 	}
 </script>
 

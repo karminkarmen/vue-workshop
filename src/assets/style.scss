@@ -36,6 +36,26 @@ $gutter: 30px;
   @return $remSize * 1rem;
 }
 
+
+@mixin productCommons() {
+  position: relative;
+
+  &--image {
+    max-width: 100%;
+    margin-bottom: $gutter/2;
+  }
+
+  &--name {
+    margin: 0 0 $gutter/6;
+  }
+  &--category {
+    display: block;
+    margin: 0;
+    font-size: asRem(10px);
+  }
+}
+
+
 .lozenge,
 body {
   font-family: Helvetica, Arial, sans-serif;
@@ -67,52 +87,6 @@ a {
   &:hover {
     color: darken($c-primary, 10%);
     text-decoration: underline;
-  }
-}
-
-.navbar {
-  @extend .box;
-  line-height: asRem(30px);
-  @include clearfix();
-
-  &--brand {
-    font-size: asRem(20px);
-    float: left;
-    margin-right: $gutter;
-    color: $c-black;
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
-  &--menu {
-    float: left;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      margin-right: $gutter/2;
-    }
-  }
-}
-
-@mixin productCommons() {
-  position: relative;
-
-  &--image {
-    max-width: 100%;
-    margin-bottom: $gutter/2;
-  }
-
-  &--name {
-    margin: 0 0 $gutter/6;
-  }
-  &--category {
-    display: block;
-    margin: 0;
-    font-size: asRem(10px);
   }
 }
 
