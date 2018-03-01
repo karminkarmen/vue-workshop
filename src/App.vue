@@ -43,49 +43,7 @@
       </ul>
     </section>
 
-    <div class="container">
-      <article class="product">
-        <img class="product--image" v-style-when-broken :src="product.photo" alt=""/>
-        <div class="product--caption">
-          <h1 class="product--name">
-            {{ product.name }}</h1>
-          <div class="product--category">
-            Category: <a href="#">{{ product.department }}</a>
-          </div>
-
-          <p class="product--description">
-            {{ product.description }}
-          </p>
-          <dl class="product--attributes">
-            <dt>Color:</dt>
-            <dd>
-              <div class="color-swatch" :style="{ 'background-color': product.color }"></div>
-            </dd>
-            <dt>Materials:</dt>
-            <dd>
-              <ul class="product--materials">
-                <li>wood</li>
-                <li>metal</li>
-                <li>plastic</li>
-              </ul>
-            </dd>
-
-            <dt>Availability:</dt>
-            <dd>{{ qunatityDescription }}</dd>
-
-            <dt>Price:</dt>
-            <dd class="price">
-              {{ product.price | asCurrency }}  <span v-show="product.price > 20" class="lozenge">free shipping</span>
-            </dd>
-          </dl>
-          <div class="product--footer">
-            <div class="product--actions">
-              <a class="btn" href="#">Edit product</a>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
+    <product-details :product="product" />
 
     <div class="container">
 
@@ -177,6 +135,7 @@
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
   import Navbar from '/src/components/Navbar.vue';
+  import ProductDetails from '/src/components/ProdictDetails.vue';
 
 	export default {
 		data() {
@@ -189,17 +148,6 @@
     computed: {
 		  product() {
 		    return (this.products.length > 0) ? this.products[0] : {};
-      },
-      qunatityDescription() {
-		    console.log("desc");
-        if (this.product.inStock <= 0) {
-          return "out of stock";
-        } else if (this.product.inStock <= 5) {
-          const x = this.product.name;
-          return "a few";
-        } else {
-          return "plenty";
-        }
       }
     },
     watch: {
@@ -235,7 +183,8 @@
       styleWhenBroken
     },
     components: {
-      Navbar
+      Navbar,
+      ProductDetails
     }
 	}
 </script>

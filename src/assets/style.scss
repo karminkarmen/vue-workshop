@@ -117,43 +117,6 @@ a {
   }
 }
 
-.product {
-  @extend .box;
-  @include clearfix();
-  @include productCommons();
-
-  &--image {
-    position: relative;
-    float: right;
-    max-width: 300px;
-    margin-left: $gutter;
-    z-index: 1;
-  }
-
-  &--attributes {
-    $verticalPadding: $gutter/3;
-    position: relative;
-    border-top: solid 1px #ccc;
-    max-width: 400px;
-    dt {
-      padding: $verticalPadding;
-      position: absolute;
-      left: 0;
-    }
-    dd {
-      margin: 0;
-      padding: $verticalPadding $verticalPadding $verticalPadding 120px;
-
-      border-bottom: solid 1px #ccc;
-
-      ul {
-        margin: 0;
-        padding: 0 20px;
-      }
-    }
-  }
-}
-
 .ribbon {
   width: 30px;
   height: 30px;
