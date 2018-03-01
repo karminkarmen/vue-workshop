@@ -11,20 +11,20 @@
     </nav>
 
     <section class="container">
-      <a class="btn" href="#less" @click.prevent="page -= 1">Previous page</a>
+      <a class="btn" href="#less" @click.prevent="(page > 1) ? page -= 1 : null">Previous page</a>
       {{ page }}
       <a class="btn" href="#more" @click.prevent="nextPage">Next page</a>
     </section>
 
     <section class="container">
       <ul class="product-list">
-        <li class="product-list--product">
+        <li v-for="n in page"  class="product-list--product">
           <div class="ribbon" style="color: orangered;" />
           <img class="product-list--product--image" :src="product.photo" alt=""/>
           <div class="product-list--product--caption">
             <h4 class="product-list--product--name">{{ product.name }}</h4>
             <p class="product-list--product--description">
-              {{ product.description }}
+              {{ n }} {{ product.description }}
             </p>
           </div>
           <div class="product-list--product--footer">
