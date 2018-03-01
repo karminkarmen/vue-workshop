@@ -16,7 +16,8 @@
       <a class="btn" href="#more" @click.prevent="nextPage">Next page</a>
     </section>
 
-    <section class="container">
+    <div v-show="isLoading" class="spinner"></div>
+    <section v-show="!isLoading" class="container">
       <ul class="product-list">
         <li v-for="product in products"
           class="product-list--product"
@@ -186,6 +187,7 @@
 		  return {
 		    name: "Vue.js for Profitroom",
         page: 1,
+        isLoading: true,
         products: []
       };
     },
@@ -223,8 +225,11 @@
         }
       },
       fetchProducts() {
+        this.isLoading = true;
         getAllProducts(this.page)
-          .then((data) => this.products = data);
+          .then((data) => this.products = data)
+          .catch((e) => console.error(e))
+          .then(() => this.isLoading = false);
 
       }
     }
