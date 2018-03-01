@@ -25,7 +25,7 @@
           :key="product.id"
         >
           <div class="ribbon" :style="{ color: product.color }" />
-          <img class="product-list--product--image" :src="product.photo" alt=""/>
+          <img class="product-list--product--image" v-style-when-broken :src="product.photo" alt=""/>
           <div class="product-list--product--caption">
             <h4 class="product-list--product--name">{{ product.name }}</h4>
             <p class="product-list--product--description">
@@ -52,7 +52,7 @@
 
     <div class="container">
       <article class="product">
-        <img class="product--image" :src="product.photo" alt=""/>
+        <img class="product--image" v-style-when-broken :src="product.photo" alt=""/>
         <div class="product--caption">
           <h1 class="product--name">
             {{ product.name }}</h1>
@@ -107,7 +107,7 @@
         <div class="form-row">
           <label for="edit-photo">Photo</label>
           <input id="edit-photo" v-model.trim.lazy="product.photo" type="text" />
-          <img class="photo-preview" :src="product.photo" />
+          <img class="photo-preview" v-style-when-broken :src="product.photo" />
         </div>
 
         <div class="form-row">
@@ -182,6 +182,7 @@
 <script>
   import { getAllProducts } from '/src/productService';
   import commonFilters from '/src/filters';
+  import { styleWhenBroken } from '/src/directvies';
 
 	export default {
 		data() {
@@ -236,6 +237,9 @@
     },
     filters: {
       ...commonFilters
+    },
+    directives: {
+      styleWhenBroken
     }
 
 	}
