@@ -1,10 +1,6 @@
 <template>
-    <div class="container">
-      <div v-if="isLoading" class="spinner"></div>
-      <div v-else-if="isError" class="box">
-        Error loading product.
-      </div>
-      <article v-else class="product">
+    <loading-header :isLoading="isLoading" :isError="isError">
+      <article class="product">
         <img class="product--image" v-style-when-broken :src="product.photo" alt=""/>
         <div class="product--caption">
           <h1 class="product--name">
@@ -45,14 +41,14 @@
           </div>
         </div>
       </article>
-
-    </div>
+    </loading-header>
 </template>
 
 <script>
   import { getProductById } from '/src/productService';
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
+  import LoadingHeader from '/src/components/LoadingHeader.vue';
 
   export default {
     props: {
@@ -112,6 +108,9 @@
     },
     directives: {
       styleWhenBroken
+    },
+    components: {
+      LoadingHeader
     }
   }
 </script>

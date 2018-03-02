@@ -1,10 +1,6 @@
 <template>
-    <div class="container">
-      <div v-if="isLoading" class="spinner"></div>
-      <div v-else-if="isError" class="box">
-        Error loading product.
-      </div>
-      <form v-else action="#" class="box product-edit">
+  <loading-header :isLoading="isLoading" :isError="isError">
+      <form action="#" class="box product-edit">
         <h2>Edit product X</h2>
 
         <div class="form-row">
@@ -86,7 +82,7 @@
         <button type="submit" :disabled="$v.$invalid" class="btn">Save product</button>
         <div class="lozenge" v-if="$v.$invalid">Form incorrect, please check all fields</div>
       </form>
-    </div>
+  </loading-header>
 </template>
 
 <script>
@@ -94,6 +90,7 @@
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
   import { required, numeric} from 'vuelidate/lib/validators';
+  import LoadingHeader from '/src/components/LoadingHeader.vue';
 
   export default {
     props: {
@@ -176,6 +173,9 @@
     },
     directives: {
       styleWhenBroken
+    },
+    components: {
+      LoadingHeader
     }
   }
 </script>
