@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+const UPDATE_PRODUCTS = "updateProducts";
+const UPDATE_PRODUCTS_STATUS = "updateProductsStatus";
 
 export default new Vuex.Store({
   state: {
@@ -17,26 +19,26 @@ export default new Vuex.Store({
   },
   actions: {
     updateProducts({ commit }, newProducts) {
-      commit("updateProducts", newProducts);
-      commit("updateProductsStatus", { isLoading: false });
+      commit(UPDATE_PRODUCTS, newProducts);
+      commit(UPDATE_PRODUCTS_STATUS, { isLoading: false });
     },
     fetchProducts({ commit, dispatch, getters }) {
-      commit("updateProductsStatus", { isLoading: true });
+      commit(UPDATE_PRODUCTS_STATUS, { isLoading: true });
 
       getAllProducts(getters.currentPageNumber)
         .then((data) => dispatch("updateProducts", data))
         .catch((e) => {
           dispatch("updateProducts", []);
-          commit("updateProductsStatus", { isError: true });
+          commit(UPDATE_PRODUCTS_STATUS, { isError: true });
           console.error(e);
         });
     }
   },
   mutations: {
-    updateProducts(state, newProducts) {
+    [UPDATE_PRODUCTS](state, newProducts) {
       state.products = newProducts;
     },
-    updateProductsStatus(state, newProductsStatus) {
+    [UPDATE_PRODUCTS_STATUS](state, newProductsStatus) {
       state.productsStatus = newProductsStatus;
     }
   }
