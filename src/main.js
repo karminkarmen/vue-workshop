@@ -28,13 +28,11 @@ const router = new VueRouter({
 			name: "productsList",
 			path: "/",
 			component: ProductsList
-		}
-		,
+		},
 		{
 			name: "productDetails",
 			path: "/product/:id",
-			component: ProductDetails,
-      props: idAsNumber
+			component: ProductDetails
 		},
     {
     	name: "productForm",

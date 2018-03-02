@@ -1,5 +1,5 @@
 <template>
-    <loading-header :isLoading="isLoading" :isError="isError">
+    <loading-header :isLoading="loadingStatus.isLoading && !product.name" :isError="loadingStatus.isError">
       <article class="product">
         <img class="product--image" v-style-when-broken :src="product.photo" alt=""/>
         <div class="product--caption">
@@ -45,25 +45,25 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import { getProductById } from '/src/productService';
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
   import LoadingHeader from '/src/components/LoadingHeader.vue';
 
   export default {
-    props: {
-      id: {
-        type: Number
-      }
-    },
     data() {
       return {
-        product: {},
         isLoading: false,
         isError: false
       };
     },
     computed: {
+      ...mapGetters({
+        id: "currentProductId",
+        product: "currentProduct",
+        loadingStatus: "currentProductStatus"
+      }),
       qunatityDescription() {
         console.log("desc");
         if (this.product.inStock <= 0) {
@@ -85,23 +85,9 @@
       }
     },
     methods: {
-      fetchProduct() {
-        this.isLoading = true;
-        this.isError = false;
-
-        if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => this.product = p)
-            .catch((e) => {
-              this.isError = true;
-            })
-            .then(() => this.isLoading = false);
-        } else {
-          this.product = {};
-          this.isLoading = false;
-          this.isError = true;
-        }
-      }
+      ...mapActions({
+        fetchProduct: "fetchCurrentProduct"
+      })
     },
     filters: {
       ...commonFilters
