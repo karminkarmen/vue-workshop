@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div v-if="isLoading" class="spinner"></div>
-    <div v-else-if="isError" class="box">
+    <div v-if="!!isLoading" class="spinner"></div>
+    <div v-else-if="!!isError" class="box">
       Error loading product.
     </div>
     <slot v-else />
@@ -13,12 +13,10 @@
   export default {
     props: {
       isLoading: {
-        type: Boolean,
-        required: true
+        default: false
       },
       isError: {
-        type: Boolean,
-        required: true
+        default: false
       }
     }
   }

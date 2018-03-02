@@ -7,7 +7,7 @@
       <router-link class="btn" :to="nextPageHref" v-show="hasNextPage">Next page</router-link>
     </section>
 
-    <loading-header v-bind="{ isLoading, isError }">
+    <loading-header v-bind="productsStatus">
       <section class="container">
         <ul class="product-list">
           <products-list-item
@@ -29,15 +29,10 @@
   import LoadingHeader from '/src/components/LoadingHeader.vue';
 
   export default {
-    data() {
-      return {
-        isLoading: true,
-        isError: true
-      };
-    },
     computed: {
+      ...mapGetters(["products", "productsStatus"]),
       ...mapGetters({
-        page: "currentPageNumber"
+        page: "currentPageNumber",
       }),
       nextPageHref() {
         return { name:'productsList', query: { page: this.page + 1 } };
@@ -50,14 +45,6 @@
       },
       hasPreviousPage() {
         return this.page > 1;
-      },
-      products: {
-        ...mapGetters({
-          get: "products"
-        }),
-        ...mapActions({
-          set: "updateProducts"
-        }),
       }
     },
     watch: {
@@ -69,18 +56,9 @@
       this.fetchProducts();
     },
     methods: {
-      fetchProducts() {
-        this.isLoading = true;
-        this.isError = false;
-
-        getAllProducts(this.page)
-          .then((data) => this.products = data)
-          .catch((e) => {
-            this.isError = true;
-            this.products = [];
-          })
-          .then(() => this.isLoading = false);
-      }
+      ...mapActions([
+        "fetchProducts"
+      ])
     },
     components: {
       ProductsListItem,
