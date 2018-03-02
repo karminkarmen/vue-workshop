@@ -25,8 +25,12 @@ const router = new VueRouter({
 		{
 			name: "productsList",
 			path: "/",
-			component: ProductsList
-		},
+			component: ProductsList,
+			props: (r) => ({
+				page: +r.query.page || 1
+    	})
+		}
+		,
 		{
 			name: "productDetails",
 			path: "/product/:id",
