@@ -125,27 +125,29 @@
       this.fetchProduct();
     },
     methods: {
-      fetchProduct() {
+      async fetchProduct() {
         this.isLoading = true;
         this.isError = false;
 
         if (this.id >= 0) {
-          getProductById(this.id)
-            .then((p) => {
-              this.name = p.name || "";
-              this.description = p.description || "";
-              this.photo = p.photo || "";
-              this.color = p.color || "#ffffff";
-              this.materials = p.materials || [];
-              this.department = p.department || "";
-              this.inStock = p.inStock || 0;
-              this.price = p.price || 0;
-            })
-            .catch((e) => {
-              this.isError = true;
-            })
-            .then(() => this.isLoading = false);
+          try {
+            const p = await getProductById(this.id);
+
+            this.name = p.name || "";
+            this.description = p.description || "";
+            this.photo = p.photo || "";
+            this.color = p.color || "#ffffff";
+            this.materials = p.materials || [];
+            this.department = p.department || "";
+            this.inStock = p.inStock || 0;
+            this.price = p.price || 0;
+          } catch(e) {
+            this.isError = true;
+          }
+          this.isLoading = false;
+
         } else {
+
           this.name = "";
           this.description = "";
           this.photo = "";
