@@ -23,6 +23,7 @@
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
   import { getAllProducts } from '/src/productService';
   import ProductsListItem from '/src/components/ProductsListItem.vue';
   import LoadingHeader from '/src/components/LoadingHeader.vue';
@@ -37,8 +38,7 @@
     data() {
       return {
         isLoading: true,
-        isError: true,
-        products: []
+        isError: true
       };
     },
     computed: {
@@ -54,6 +54,9 @@
       hasPreviousPage() {
         return this.page > 1;
       },
+      ...mapGetters([
+        "products"
+      ]),
     },
     watch: {
       page() {
@@ -64,12 +67,15 @@
       this.fetchProducts();
     },
     methods: {
+      ...mapActions([
+        "updateProducts"
+      ]),
       fetchProducts() {
         this.isLoading = true;
         this.isError = false;
 
         getAllProducts(this.page)
-          .then((data) => this.products = data)
+          .then((data) => this.updateProducts(data))
           .catch((e) => {
             this.isError = true;
             this.products = [];
