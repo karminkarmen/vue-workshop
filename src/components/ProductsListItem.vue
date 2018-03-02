@@ -17,7 +17,7 @@
         </p>
 
         <div class="product-list--product--actions">
-          <a class="btn" href="#">View product</a>
+          <router-link class="btn" :to="{ name: 'productDetails', params: { id: product.id } }">View product</router-link>
         </div>
       </template>
       <template v-else>

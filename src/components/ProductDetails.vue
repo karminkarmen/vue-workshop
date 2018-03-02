@@ -1,6 +1,10 @@
 <template>
     <div class="container">
-      <article class="product">
+      <div v-if="isLoading" class="spinner"></div>
+      <div v-else-if="isError" class="box">
+        Error loading product.
+      </div>
+      <article v-else class="product">
         <img class="product--image" v-style-when-broken :src="product.photo" alt=""/>
         <div class="product--caption">
           <h1 class="product--name">
@@ -41,22 +45,27 @@
           </div>
         </div>
       </article>
-    </div>
 
+    </div>
 </template>
 
 <script>
-  import { getAllProducts } from '/src/productService';
+  import { getProductById } from '/src/productService';
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
-  import Navbar from '/src/components/Navbar.vue';
 
   export default {
     props: {
-      product: {
-        type: Object,
-        required: true
+      id: {
+        type: Number
       }
+    },
+    data() {
+      return {
+        product: {},
+        isLoading: false,
+        isError: false
+      };
     },
     computed: {
       qunatityDescription() {
@@ -68,6 +77,33 @@
           return "a few";
         } else {
           return "plenty";
+        }
+      },
+    },
+    created() {
+      this.fetchProduct();
+    },
+    watch: {
+      id() {
+        this.fetchProduct();
+      }
+    },
+    methods: {
+      fetchProduct() {
+        this.isLoading = true;
+        this.isError = false;
+
+        if (this.id >= 0) {
+          getProductById(this.id)
+            .then((p) => this.product = p)
+            .catch((e) => {
+              this.isError = true;
+            })
+            .then(() => this.isLoading = false);
+        } else {
+          this.product = {};
+          this.isLoading = false;
+          this.isError = true;
         }
       }
     },
