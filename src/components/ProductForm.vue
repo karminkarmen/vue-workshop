@@ -1,6 +1,6 @@
 <template>
   <loading-header :isLoading="isLoading" :isError="isError">
-      <form action="#" class="box product-edit">
+      <form @submit.prevent="saveProduct" class="box product-edit">
         <h2>Edit product X</h2>
 
         <div class="form-row">
@@ -81,12 +81,13 @@
 
         <button type="submit" :disabled="$v.$invalid" class="btn">Save product</button>
         <div class="lozenge" v-if="$v.$invalid">Form incorrect, please check all fields</div>
+        <div class="lozenge" v-if="saveError ">Error saving the form, check your fields</div>
       </form>
   </loading-header>
 </template>
 
 <script>
-  import { getProductById } from '/src/productService';
+  import { getProductById, updateProduct } from '/src/productService';
   import commonFilters from '/src/filters';
   import { styleWhenBroken } from '/src/directvies';
   import { required, numeric} from 'vuelidate/lib/validators';
@@ -103,6 +104,7 @@
       return {
         isLoading: false,
         isError: false,
+        saveError: false,
 
         name: "",
         description: "",
@@ -156,6 +158,29 @@
           this.isLoading = false;
           this.isError = true;
         }
+      },
+      saveProduct() {
+        if (!this.$v.$invalid) {
+          this.isLoading = true;
+          this.saveError = false;
+
+          updateProduct({
+            id: this.id,
+
+            name: this.name,
+            description: this.description,
+            photo: this.photo,
+            color: this.color,
+            materials: this.materials,
+            department: this.department,
+            inStock: this.inStock,
+            price: this.price,
+          })
+            .then(() => this.$router.push({ name: "productDetails", params: { id: this.id } }))
+            .catch(() => this.saveError = true)
+            .then(() => this.isLoading = false);
+        }
+
       }
     },
     validations: {
