@@ -1,11 +1,14 @@
 import ProductsListItem from '/src/components/ProductsListItem.vue'
-import {shallow} from '@vue/test-utils'
+import {RouterLinkStub, shallow} from '@vue/test-utils'
 
 
 function instantiateWithProduct(product) {
   return shallow(ProductsListItem, {
     propsData: {
       product
+    },
+    stubs: {
+      RouterLink: RouterLinkStub
     }
   });
 }
@@ -49,6 +52,18 @@ describe('ProductsListItem.vue', () => {
       expect(vm.classes()).not.toContain("highlight");
     });
 
+  });
+
+  describe("Free shipping lozenge", () => {
+    it('is visible when price is above 20', () => {
+      const vm = instantiateWithProduct({ inStock: 1, price: 20 });
+      expect(vm.find(".price .lozenge").isVisible()).toBe(false);
+    });
+
+    it('is NOT visible when price is 20 or less', () => {
+      const vm = instantiateWithProduct({ inStock: 1, price: 21 });
+      expect(vm.find(".price .lozenge").isVisible()).toBe(true);
+    });
   });
 
 });
