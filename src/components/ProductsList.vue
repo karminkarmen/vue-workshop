@@ -54,9 +54,14 @@
       hasPreviousPage() {
         return this.page > 1;
       },
-      ...mapGetters([
-        "products"
-      ]),
+      products: {
+        ...mapGetters({
+          get: "products"
+        }),
+        ...mapActions({
+          set: "updateProducts"
+        }),
+      }
     },
     watch: {
       page() {
@@ -67,15 +72,12 @@
       this.fetchProducts();
     },
     methods: {
-      ...mapActions([
-        "updateProducts"
-      ]),
       fetchProducts() {
         this.isLoading = true;
         this.isError = false;
 
         getAllProducts(this.page)
-          .then((data) => this.updateProducts(data))
+          .then((data) => this.products = data)
           .catch((e) => {
             this.isError = true;
             this.products = [];
