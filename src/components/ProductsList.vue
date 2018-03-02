@@ -29,12 +29,6 @@
   import LoadingHeader from '/src/components/LoadingHeader.vue';
 
   export default {
-    props: {
-      page: {
-        type: Number,
-        default: 1
-      }
-    },
     data() {
       return {
         isLoading: true,
@@ -42,6 +36,9 @@
       };
     },
     computed: {
+      ...mapGetters({
+        page: "currentPageNumber"
+      }),
       nextPageHref() {
         return { name:'productsList', query: { page: this.page + 1 } };
       },

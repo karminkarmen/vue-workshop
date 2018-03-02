@@ -6,6 +6,7 @@ import store from '/src/store';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Vuelidate from 'vuelidate';
+import {sync} from 'vuex-router-sync';
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
@@ -26,10 +27,7 @@ const router = new VueRouter({
 		{
 			name: "productsList",
 			path: "/",
-			component: ProductsList,
-			props: (r) => ({
-				page: +r.query.page || 1
-    	})
+			component: ProductsList
 		}
 		,
 		{
@@ -46,6 +44,8 @@ const router = new VueRouter({
 		},
 	]
 });
+
+sync(store, router);
 
 new Vue({
 	render: h => h(App),
