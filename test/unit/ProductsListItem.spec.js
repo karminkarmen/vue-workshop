@@ -44,7 +44,7 @@ describe('ProductsListItem.vue', () => {
       const vm = instantiateWithProduct(product);
 
       product.price = 300;
-      vm.setProps(product);
+      vm.update();
 
       expect(vm.classes()).not.toContain("highlight");
     });
