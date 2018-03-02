@@ -1,12 +1,11 @@
-import { shallow } from '@vue/test-utils'
 import ProductsListItem from '/src/components/ProductsListItem.vue'
+import {shallow} from '@vue/test-utils'
+
 
 function instantiateWithProduct(product) {
   return shallow(ProductsListItem, {
-    context: {
-      props: {
-        product
-      }
+    propsData: {
+      product
     }
   });
 }
@@ -22,6 +21,13 @@ describe('ProductsListItem.vue', () => {
 	});
 
   describe('Highlights product', () => {
+    let product;
+
+    beforeEach(() => {
+      product = {
+        name: "a"
+      };
+    });
 
     it('should be highlighted if price is below 300', () => {
       const vm = instantiateWithProduct({ price: 299 });
@@ -44,4 +50,5 @@ describe('ProductsListItem.vue', () => {
     });
 
   });
+
 });
