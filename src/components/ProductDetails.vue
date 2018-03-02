@@ -40,7 +40,7 @@
           </dl>
           <div class="product--footer">
             <div class="product--actions">
-              <a class="btn" href="#">Edit product</a>
+              <router-link class="btn" :to="{ name: 'productForm', params: { id: product.id } }">Edit product</router-link>
             </div>
           </div>
         </div>
