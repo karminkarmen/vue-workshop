@@ -19,6 +19,7 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex';
   import {getAllProducts} from '../productService';
   import LoadingStatus from "./LoadingStatus";
   import ProductsListItem from "./ProductsListItem";
@@ -29,7 +30,6 @@
     },
     data() {
       return {
-        products: [],
         isLoading: true
       }
     },
@@ -42,16 +42,20 @@
       },
       isLastPage() {
         return this.products.length === 0;
-      }
+      },
+      ...mapGetters([
+        "products"
+      ]),
     },
     methods: {
       reloadProducts() {
         this.isLoading = true;
         getAllProducts(this.page)
-          .then((data) => this.products = data)
-          .catch((e) => this.products = [])
+          .then((data) => this.updateProducts(data))
+          .catch((e) => this.updateProducts([]))
           .then(() => this.isLoading = false);
-      }
+      },
+      ...mapActions(["updateProducts"])
     },
     watch: {
       page() {
