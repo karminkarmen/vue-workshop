@@ -2,9 +2,9 @@
 
 exports[`Navbar matches snapshot 1`] = `
 <nav class="navbar">
-  <router-link to="/" class="navbar--brand">
+  <a class="navbar--brand">
     Vue.js (work)shop
-  </router-link>
+  </a>
   <ul class="navbar--menu">
     <li class="active">
       <a href="#">Somewhere</a>
